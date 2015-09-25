@@ -16,3 +16,4 @@ Route::get('/', function () {
 });
 Route::get('/contact','ContactController@index');
 Route::get('/contact/showlist','ContactController@showlist');
+Route::get('/articles','ArticlesController@index');
