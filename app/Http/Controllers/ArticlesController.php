@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Articles;
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use App\Http\Requests\CheckArticlesRequest;
 use App\Http\Controllers\Controller;
 
 class ArticlesController extends Controller
@@ -13,7 +14,7 @@ class ArticlesController extends Controller
 		return view("articles")->with("articles",$articles);
 	}
 
-	public function store(Request $request){
+	public function store(CheckArticlesRequest $request){
 		$dulieu_tu_input = $request->all();
  
 		//Gọi model Articles.php đã được tạo ra ở các bài trước
@@ -28,7 +29,7 @@ class ArticlesController extends Controller
 		$articles->save();
  
 		//Sau khi đã lưu xong, tiến hành chuyển hướng tới route articles
-                //hiển thị toàn bộ thông tin bảng articles trong database đã được tạo ở các bài trước
+		//hiển thị toàn bộ thông tin bảng articles trong database đã được tạo ở các bài trước
 		return redirect('articles');
 	}
 }
