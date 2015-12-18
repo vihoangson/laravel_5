@@ -12,6 +12,5 @@
 */
 
 //article_category
-Route::delete('article_category/delete', 'Admin\ArticleCategoryController@delete');
-Route::resource('article_category', 'Admin\ArticleCategoryController', ['except' => ['show']]);
-Route::put('article_category/updateFlag/{id}', 'Admin\ArticleCategoryController@updateFlag');
+Route::get('article/img_show/{id}/{slug}/{santo}.html', 'ArticlesController@img_show');
+Route::resource('article', 'ArticlesController');
