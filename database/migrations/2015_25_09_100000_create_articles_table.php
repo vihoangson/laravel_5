@@ -11,13 +11,13 @@ class CreateArticlesTable extends Migration
 */
 public function up()
 {
-Schema::create('articles', function(Blueprint $table)
-{
-$table->increments('id');
-$table->string('name123'); //thêm cột name
-$table->string('auth123or'); // thêm cột author
-$table->timestamps();
-});
+	Schema::create('articles', function(Blueprint $table)
+	{
+		$table->increments('id');
+		$table->string('name'); //thêm cột name
+		$table->string('author'); // thêm cột author
+		$table->timestamps();
+	});
 }
 
 /**

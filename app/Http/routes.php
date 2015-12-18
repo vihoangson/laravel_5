@@ -11,11 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('/contact','ContactController@index');
-Route::get('/contact/showlist','ContactController@showlist');
-Route::get('/articles','ArticlesController@index');
-
-Route::post('/articles', 'ArticlesController@store');
+//article_category
+Route::delete('article_category/delete', 'Admin\ArticleCategoryController@delete');
+Route::resource('article_category', 'Admin\ArticleCategoryController', ['except' => ['show']]);
+Route::put('article_category/updateFlag/{id}', 'Admin\ArticleCategoryController@updateFlag');

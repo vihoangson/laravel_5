@@ -14,23 +14,25 @@ class ArticlesController extends Controller
 		return view("articles")->with("articles",$articles);
 	}
 
-	public function store(CheckArticlesRequest $request){
-		$dulieu_tu_input = $request->all();
- 
-		//Gọi model Articles.php đã được tạo ra ở các bài trước
-		$articles = new Articles;
- 
-		//Lấy thông tin từ các input đưa vào thuộc tính name, author
-                //trong model Articles
-		$articles->name = $dulieu_tu_input["name"];
-		$articles->author = $dulieu_tu_input["author"];
- 
-		//Tiến hành lưu dữ liệu vào database
-		$articles->save();
- 
-		//Sau khi đã lưu xong, tiến hành chuyển hướng tới route articles
-		//hiển thị toàn bộ thông tin bảng articles trong database đã được tạo ở các bài trước
-		return redirect('articles');
+	public function store(){
+		echo 123;
+	}
+	public function update($id , Request $request){
+		
+		$articles = Articles::findOrFail($id);
+
+		$articles->update($request->all());
+
+                return redirect('articles');
+	}
+
+	public function edit($id){//truyền mã id của article
+	//Tìm article thông qua mã id tương ứng
+		$article = Articles::findOrFail($id);
+		print_r($article);
+		die;
+	// Gọi view edit.blade.php hiển thị bải viết
+		return view('edit',compact('article'));
 	}
 }
 
