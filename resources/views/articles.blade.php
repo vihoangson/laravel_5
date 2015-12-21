@@ -21,12 +21,17 @@
 
 		<div class="container">
 			<?php echo view("navbar"); ?>
-
 			<h2>Home page</h2>
-
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h3 class="panel-title">Panel title</h3>
+				</div>
+				<div class="panel-body">
+					Panel content
+				</div>
+			</div>
+			<?php print_r($articles); ?>
 		</div>
-
-
 		<!-- jQuery -->
 		<script src="//code.jquery.com/jquery.js"></script>
 		<!-- Bootstrap JavaScript -->
