@@ -14,6 +14,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        view()->share("default_title","Tiêu đề trang web");
     }
 
     /**

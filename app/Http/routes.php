@@ -14,3 +14,4 @@
 //article_category
 Route::get('article/img_show/{id}/{slug}/{santo}.html', 'ArticlesController@img_show');
 Route::resource('article', 'ArticlesController');
+Route::resource('/', 'ArticlesController');

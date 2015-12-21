@@ -1,4 +1,5 @@
 <?php
+define("PATH_APP",'/assets/themes/basic/');
 
 return [
 

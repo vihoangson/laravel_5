@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Articles;
+use App\Models\Articles;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\CheckArticlesRequest;
@@ -11,7 +11,7 @@ class ArticlesController extends Controller
 {
 	public function index(){
 		$articles = Articles::all();
-		return view("articles")->with("articles",$articles);
+		return view("homepage")->with("articles",$articles)->with("santo",[1,2]);
 	}
 
 }
