@@ -15,7 +15,8 @@ define('LARAVEL_START', microtime(true));
 */
 
 require __DIR__.'/../vendor/autoload.php';
-
+require __DIR__.'/../app/Helpers/dBug.php';
+require __DIR__.'/../app/Helpers/common_helper.php';
 /*
 |--------------------------------------------------------------------------
 | Include The Compiled Class File
