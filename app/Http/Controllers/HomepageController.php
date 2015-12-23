@@ -21,7 +21,7 @@ class HomepageController extends Controller
 		///////
 		// Tự động lấy tin theo từ khóa
 		///////
-		$this->auto_get_video();
+		//$this->auto_get_video();
 
 		///////
 		// Tìm và xóa cái video bị trùng
@@ -32,6 +32,24 @@ class HomepageController extends Controller
 		// Tự động tìm và xóa các file đã disable
 		///////
 		//$this->find_and_delete_video_disable();
+
+		///////
+		// Cập nhật vào viewCount
+		///////
+		// $this->update_summary_to_viewcount(){		
+
+		return view("homepage");
+	}
+
+	///////
+	// Cập nhật vào viewCount
+	///////
+	private function update_summary_to_viewcount(){
+		$rs = (Videos::orderBy("videos_viewcount","desc")->limit(100)->get());
+		foreach ($rs as $key => $value) {
+			$summary = json_decode($value->videos_summary);
+			$value->update(["videos_viewcount"=>$summary->statistics->viewCount]);
+		}
 	}
 
 	///////
@@ -132,12 +150,15 @@ class HomepageController extends Controller
 			'key' => API_GOOGLE
 			);
 		$url = "https://www.googleapis.com/youtube/v3/videos?".http_build_query($option, 'a', '&');
+		echo $url;
+		
 		$curl = curl_init($url);
 		curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
 		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		$json_response = curl_exec($curl);
 		curl_close($curl);
+		dd($json_response);
 		$responseObj = json_decode($json_response);
 		return $responseObj->items;
 	}

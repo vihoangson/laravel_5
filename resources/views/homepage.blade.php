@@ -1,4 +1,4 @@
-@extends("layouts/layout_1")
+@extends("layouts/theme_1")
 
 @section("body")
 	@section("title")
