@@ -1,6 +1,6 @@
 <?php
 define("PATH_APP",'/assets/themes/basic/');
-
+define("THEME_PATH",'/assets/template/video2/');
 return [
 
     /*
