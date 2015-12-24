@@ -11,6 +11,8 @@ use google\apiclient\src\Google\Service\YouTube;
 
 class ImportvideoController extends Controller
 {
+	private $info_log=[];
+
 	public function __construct(){
 		define("API_GOOGLE","AIzaSyClzC3syB5Ig4vpjgsvkHF2mEU9kTpi4C4");
 		$this->video_per_result = 50;
@@ -21,7 +23,7 @@ class ImportvideoController extends Controller
 		///////
 		// Tự động lấy tin theo từ khóa
 		///////
-		$this->auto_get_video();
+		//$this->auto_get_video();
 
 		///////
 		// Tìm và xóa cái video bị trùng
@@ -37,16 +39,63 @@ class ImportvideoController extends Controller
 		// Cập nhật vào viewCount
 		///////
 		// $this->update_summary_to_viewcount();
+		return view("admin.importvideo");
+	}
+
+	public function ajax_action_import_video($case,$keywords=null){
+
+		switch($case){
+			case "auto_get_video":
+				$this->auto_get_video($keywords);
+			break;
+			case "find_duplicate_row_and_delete":
+				$this->find_duplicate_row_and_delete();
+			break;
+			case "find_and_delete_video_disable":
+				$this->find_and_delete_video_disable();
+			break;
+			case "update_summary_to_viewcount":
+				return false;
+				$this->update_summary_to_viewcount();
+			break;
+			case "update_summary_to_duration":
+				return false;
+				$this->update_summary_to_duration();
+			break;
+			
+		}
+
+		echo implode("<br>",$this->info_log);
 	}
 
 	///////
 	// Cập nhật vào viewCount
 	///////
 	private function update_summary_to_viewcount(){
-		$rs = (Videos::orderBy("videos_viewcount","desc")->limit(100)->get());
+		$this->info_log[] = __FUNCTION__;
+		$rs = Videos::all();
 		foreach ($rs as $key => $value) {
-			$summary = json_decode($value->videos_summary);
-			$value->update(["videos_viewcount"=>$summary->statistics->viewCount]);
+			$summary = json_decode($value->videos_summary)[0];
+			if(isset($summary->statistics->viewCount)){
+				$value->update(["videos_viewcount"=>$summary->statistics->viewCount]);
+				Log::info("update_summary_to_viewcount: ".$summary->statistics->viewCount);
+			}else{
+			}
+		}
+	}
+
+	///////
+	// Cập nhật vào viewCount
+	///////
+	private function update_summary_to_duration(){
+		$this->info_log[] = __FUNCTION__;
+		$rs = Videos::all();
+		foreach ($rs as $key => $value) {
+			$summary = json_decode($value->videos_summary)[0];
+			if(isset($summary->contentDetails->duration)){
+				$value->update(["videos_duration"=>$summary->contentDetails->duration]);
+				Log::info("update_summary_to_duration: ".$summary->contentDetails->duration);
+			}
 		}
 	}
 
@@ -54,6 +103,7 @@ class ImportvideoController extends Controller
 	// Tự động tìm và xóa các file đã disable
 	///////
 	private function find_and_delete_video_disable(){
+		return;
 		$log = "Start: ".__FUNCTION__." ";
 		$log .= "Các video bị chết: ";
 		$rs = Videos::all();
@@ -77,8 +127,8 @@ class ImportvideoController extends Controller
 	///////
 	// Tự động lấy tin theo từ khóa
 	///////
-	public function auto_get_video(){
-		$keys=[
+	public function auto_get_video($keywords=null){
+		$keywords_tmp=[
 			// "Khoa học",
 			// "Công nghệ",
 			// "Khoa học và công nghệ",
@@ -112,11 +162,19 @@ class ImportvideoController extends Controller
 			//"nhạc xuân",
 			// "nhạc đám cưới",
 			// "nhạc cưới",
-
 			//"dưa leo",
-		];
 
-		echo $this->get_save_video_by_array($keys);
+			//"DIY do it yourself",
+			//"how does it made",
+		];
+		if(empty($keywords)){
+			$this->info_log[] = "Không có keywords";
+			return false;
+		}
+		$keywords_a = explode(",",$keywords);
+		$this->info_log[] = "<h2>Import các mục sau:</h2>";
+		$rs = $this->get_save_video_by_array($keywords_a);
+
 	}
 
 
@@ -150,8 +208,6 @@ class ImportvideoController extends Controller
 			'key' => API_GOOGLE
 			);
 		$url = "https://www.googleapis.com/youtube/v3/videos?".http_build_query($option, 'a', '&');
-		echo $url;
-		
 		$curl = curl_init($url);
 		curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
 		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
@@ -167,9 +223,9 @@ class ImportvideoController extends Controller
 	///////
 	private function get_save_video_by_array($keys){
 			if(empty($keys)) return false;
-			$total=0;
 			$num_request =$this->video_per_result;
 			foreach ($keys as $key_keys => $value_keys) {
+				$this->info_log[] = "Keyword: [".$value_keys."] - [".$num_request."] kết quả";
 				$params = [
 					"keywords"    =>$value_keys,
 					"num_request" => $num_request,
@@ -177,9 +233,8 @@ class ImportvideoController extends Controller
 				$video = $this->get_video_custom($params);
 				$video["keywords"] = $params["keywords"];
 				$this->save_video_by_array($video);
-				$total += count($video);
 			}
-			return $total;
+			return true;
 	}
 
 	///////
@@ -191,19 +246,32 @@ class ImportvideoController extends Controller
 	// $params["keywords"]
 	///////
 	private function save_video_by_array($params){
+		$i = 0;
 		foreach ($params as $key => $value) {
 			if(empty($value["videoId"])) continue;
-			if(Videos::where("videos_url",$value["videoId"])->count()>0) continue;
+			if(Videos::where("videos_url",$value["videoId"])->count()>0){
+				$this->info_log[] = "<span class='label label-danger'> Đã có trong DB</span> [".$value["title"]."]";
+				continue;
+			} else{
+				$this->info_log[] = "<span class='label label-success'> Không có trong DB</span> [".$value["title"]."]";
+			}
+			$videos_summary = $this->get_detail_video($value["videoId"]);
 			$data_video = [
-				"videos_url"     => $value["videoId"],
-				"videos_title"   => $value["title"],
-				"videos_cat"     => $params["keywords"],
-				"videos_note"    => $value["description"],
-				"videos_summary" => json_encode($this->get_detail_video($value["videoId"])),
+				"videos_url"       => $value["videoId"],
+				"videos_title"     => $value["title"],
+				"videos_cat"       => $params["keywords"],
+				"videos_note"      => $value["description"],
+				"videos_summary"   => json_encode($videos_summary),
+				"videos_viewcount" => $videos_summary[0]->statistics->viewCount,
+				"videos_duration"  => $videos_summary[0]->contentDetails->duration,
 			];
-			Videos::create($data_video);
+			if(Videos::create($data_video)){
+				$i++;
+			}
+
 			Log::info(" Insert new video: ". json_encode($data_video));
 		}
+		$this->info_log[] = "Đã save: [".$i."] kết quả";
 	}
 
 
@@ -234,6 +302,7 @@ class ImportvideoController extends Controller
 			}
 			$i++;
 		}
+		$this->info_log[] = "Hoàn thành [".$j."] kết quả";
 		return $video;
 	}
 

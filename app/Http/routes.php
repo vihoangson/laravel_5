@@ -20,9 +20,14 @@ Route::get('/single-video-{id}.html', "HomepageController@single_detail");
 
 
 Route::get('/admin/import_video/', "admin\ImportvideoController@show");
+
 Route::get('/admin/', function(){
 	return view("admin.index");
 });
+
+Route::get('/admin/import_video/ajax_action/{case}', "admin\ImportvideoController@ajax_action_import_video");
+Route::get('/admin/import_video/ajax_action/{case}/{keywords}', "admin\ImportvideoController@ajax_action_import_video");
+
 
 // /import_video
 Route::get('/inc/more-uploads-1.html', "HomepageController@ajax_video_load_more");

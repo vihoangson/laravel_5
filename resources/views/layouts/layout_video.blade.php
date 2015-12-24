@@ -29,7 +29,7 @@
     <link rel="stylesheet" href="<?= THEME_PATH; ?>css/bootstrap.min.css">
     <link rel="stylesheet" href="<?= THEME_PATH; ?>css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="<?= THEME_PATH; ?>css/magnific-popup.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<?= THEME_PATH; ?>vendors/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="<?= THEME_PATH; ?>vendors/bootstrap-select/css/bootstrap-select.min.css" media="screen">
     
     <!--Fonts-->
@@ -318,5 +318,7 @@
     
     <!--Theme JS-->
     <script src="<?= THEME_PATH; ?>js/theme.js"></script>
+
+    @yield("script_custom")
 </body>
 </html>
