@@ -184,14 +184,9 @@
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="#"><span class="filter_text">All Categories</span><span class="badge"></span></a></li>
-                        <li><a href="#"><span class="filter_text">Art</span><span class="badge">1200</span></a></li>
-                        <li><a href="#"><span class="filter_text">astrology</span><span class="badge">650</span></a></li>
-                        <li><a href="#"><span class="filter_text">biography</span><span class="badge">1200</span></a></li>
-                        <li><a href="#"><span class="filter_text">comedy</span><span class="badge">650</span></a></li>
-                        <li><a href="#"><span class="filter_text">entertainment</span><span class="badge">1200</span></a></li>
-                        <li><a href="#"><span class="filter_text">photoshop</span><span class="badge">650</span></a></li>
-                        <li><a href="#"><span class="filter_text">philosophy</span><span class="badge">1200</span></a></li>
-                        <li><a href="#"><span class="filter_text">nano tube</span><span class="badge">650</span></a></li>
+                        @foreach($list_cat as $key2 => $value2)
+                        <li><a href="/category/{{($value2->videos_cat)}}.html"><span class="filter_text">{{$value2->videos_cat}}</span><span class="badge">1200</span></a></li>
+                        @endforeach
                     </ul>
                 </div>
                 <!--Post Type Filter-->

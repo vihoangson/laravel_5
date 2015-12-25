@@ -18,6 +18,8 @@ Route::get('/showcat.html', 'HomepageController@show_by_cat');
 Route::get('/single-video.html', "HomepageController@single_detail");
 Route::get('/single-video-{id}.html', "HomepageController@single_detail");
 
+Route::get('/category/{id}.html', "HomepageController@category");
+
 
 Route::get('/admin/import_video/', "admin\ImportvideoController@show");
 

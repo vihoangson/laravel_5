@@ -56,7 +56,7 @@
         /*  Ribbon Links Disable
         /*----------------------------------------------------*/
         $('.ribbon a[href="#"]').on('click',function(){
-            return false
+            //return false
         });
         
         /*----------------------------------------------------*/
@@ -84,7 +84,6 @@
         /*  Category Filter Dropdown
         /*----------------------------------------------------*/
         $('.category_filter .dropdown-menu').find('a').on('click',function(e) {
-            e.preventDefault();
             var concept = $(this).find('.filter_text').text();
             $('.category_filter .btn span.filter-option').text(concept);
             $('.category_filter .btn').addClass('active');
