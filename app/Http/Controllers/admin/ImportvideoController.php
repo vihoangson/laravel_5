@@ -1,6 +1,6 @@
 <?php
 namespace App\Http\Controllers\admin;
-
+use Mail;
 use Log;
 use App\Models\Videos;
 use Illuminate\Http\Request;
@@ -19,6 +19,22 @@ class ImportvideoController extends Controller
 	}
 
 	public function show(){
+
+
+    $data = array(
+        'name' => "Learning Laravel",
+    );
+
+    Mail::send('emails.welcome', $data, function ($message) {
+
+        $message->from('info@vihoangson.com', 'Learning Laravel');
+
+        $message->to('vihoangson@gmail.com')->subject('Learning Laravel test email');
+
+    });
+
+    return "Your email has been sent successfully";
+
 
 		///////
 		// Tự động lấy tin theo từ khóa
@@ -46,12 +62,15 @@ class ImportvideoController extends Controller
 
 		switch($case){
 			case "auto_get_video":
+				$this->info_log[] = "Thực hiện";
 				$this->auto_get_video($keywords);
 			break;
 			case "find_duplicate_row_and_delete":
+				$this->info_log[] = "Thực hiện";
 				$this->find_duplicate_row_and_delete();
 			break;
 			case "find_and_delete_video_disable":
+				return false;
 				$this->find_and_delete_video_disable();
 			break;
 			case "update_summary_to_viewcount":

@@ -21,6 +21,11 @@ class HomepageController extends Controller
 		return view("homepage.homepage",compact("rs"));
 	}
 
+	public function category($id){
+		$rs = Videos::where("videos_cat",$id)->get();
+		return view("videos.category",compact("rs"));
+	}
+
 	public function single_detail($id=null){
 		if(empty($id)){
 			abort(404);
