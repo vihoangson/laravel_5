@@ -28,5 +28,33 @@ if ( ! function_exists( 'dd' ) ) {
 		}
 	}
 }
+function vaild_youtube( $header )
+{
+    $headers = get_headers($header);
+    switch($headers[0]) {
+	    case 'HTTP/1.0 200 OK':
+	    // video valid
+	    return $header = 'video valid';
+	    break;
+
+	    case '403':
+	    // private video
+	    return $header =  'private video';
+	    break;
+
+	    case 'HTTP/1.0 404 Not Found':
+	    // video not found
+	    return $header =  'video not found';
+	    break;
+
+	    default:
+	    // nothing  above
+	    return $header =  'nothing  above';
+	    break;
+    }
+
+}
+
+
 ?>
 

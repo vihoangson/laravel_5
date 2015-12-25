@@ -12,6 +12,7 @@
                 @endforeach
                 <div class="row m0">
                     <div class="clearfix"></div>
+                    <p>{!! $rs->appends(['sort' => 'votes'])->render() !!}</p>
                     <a href="/inc/more-uploads-1.html" class="load_more_videos">Load more videos</a>
                 </div>
             </div>

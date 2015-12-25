@@ -21,19 +21,19 @@ class ImportvideoController extends Controller
 	public function show(){
 
 
-    $data = array(
-        'name' => "Learning Laravel",
-    );
+    // $data = array(
+    //     'name' => "Learning Laravel",
+    // );
 
-    Mail::send('emails.welcome', $data, function ($message) {
+    // Mail::send('emails.welcome', $data, function ($message) {
 
-        $message->from('info@vihoangson.com', 'Learning Laravel');
+    //     $message->from('info@vihoangson.com', 'Learning Laravel');
 
-        $message->to('vihoangson@gmail.com')->subject('Learning Laravel test email');
+    //     $message->to('vihoangson@gmail.com')->subject('Learning Laravel test email');
 
-    });
+    // });
 
-    return "Your email has been sent successfully";
+    // return "Your email has been sent successfully";
 
 
 		///////
@@ -70,7 +70,7 @@ class ImportvideoController extends Controller
 				$this->find_duplicate_row_and_delete();
 			break;
 			case "find_and_delete_video_disable":
-				return false;
+				//return false;
 				$this->find_and_delete_video_disable();
 			break;
 			case "update_summary_to_viewcount":
@@ -122,21 +122,17 @@ class ImportvideoController extends Controller
 	// Tự động tìm và xóa các file đã disable
 	///////
 	private function find_and_delete_video_disable(){
-		return;
 		$log = "Start: ".__FUNCTION__." ";
 		$log .= "Các video bị chết: ";
-		$rs = Videos::all();
+		$rs = Videos::limit(1000)->get();
 		foreach($rs as $key => $value){
-			$data = ($this->get_detail_video($value->videos_url,["part" => 'status']));
-			if(empty($data)){
-				$value->delete();
-				$log .= "".$value->videos_url.", ";
-				echo "<hr>";
+			$status = vaild_youtube('http://img.youtube.com/vi/'.$value->videos_url.'/3.jpg');
+			if($status=="video valid"){
+				$this->info_log[] = "Tồn tại: ".$value->videos_url;
 			}else{
-				echo "<p>Pass</p>";
-			}
-			if($key>20){
-				break;
+				$this->info_log[] = "Không tồn tại: ".$value->videos_url;
+				Log::info("Không còn sử dụng".$value->videos_url);
+				$value->delete();
 			}
 		}
 		$log .= "Stop: ".__FUNCTION__." ";

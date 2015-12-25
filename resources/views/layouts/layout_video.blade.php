@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield("title")</title>
-    
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!--Favicons-->
     <link rel="apple-touch-icon" sizes="57x57" href="<?= THEME_PATH; ?>favicon/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="<?= THEME_PATH; ?>favicon/apple-icon-60x60.png">
@@ -205,9 +205,10 @@
                     </label>
                 </div>
                 <!--Search Form-->
-                <form action="#" role="search" class="search_form fright">
+                <form action="/search.html" method="post" role="search" class="search_form fright">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search Here" >
+                        <input type="text" name="keywords" class="form-control" placeholder="Search Here" >
                         <span class="input-group-addon"><button type="submit"><img src="<?= THEME_PATH; ?>images/icons/search.png" alt=""></button></span>
                     </div>
                 </form>

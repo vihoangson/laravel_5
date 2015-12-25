@@ -12,6 +12,12 @@
 */
 
 //article_category
+//
+
+
+Route::post('/search.html', 'HomepageController@search');
+Route::get('/search.html', 'HomepageController@search');
+
 Route::get('/', 'HomepageController@show');
 Route::get('/index.html', 'HomepageController@show');
 Route::get('/showcat.html', 'HomepageController@show_by_cat');

@@ -21,8 +21,15 @@ class HomepageController extends Controller
 		return view("homepage.homepage",compact("rs"));
 	}
 
+	public function search(Request $request){
+		$keywords = $request->get("keywords");
+		$rs = Videos::where("videos_title",'like', '%'.$keywords.'%')->paginate(16);
+		
+		return view("videos.search",compact("rs"));
+	}
+
 	public function category($id){
-		$rs = Videos::where("videos_cat",$id)->get();
+		$rs = Videos::where("videos_cat",$id)->paginate(16);
 		return view("videos.category",compact("rs"));
 	}
 
@@ -31,7 +38,9 @@ class HomepageController extends Controller
 			abort(404);
 		}
 		$rs = Videos::find($id);
-		return view("videos/single-detail",compact("rs"));
+		$relation = Videos::where("videos_cat",$rs->videos_cat)->orderBy("videos_viewcount","desc")->limit(4)->get();
+		$newest = Videos::where("videos_cat",$rs->videos_cat)->orderBy("id","desc")->limit(4)->get();
+		return view("videos/single-detail",compact("rs","relation","newest"));
 	}
 
 	public function show_by_cat(){

@@ -50,10 +50,10 @@
                                 <div class="row m0 about_section section_row single_video_info">
                                     <dl class="dl-horizontal">
                                         <dt>Publish Date:</dt>
-                                        <dd>August 23, 2015</dd>
+                                        <dd>{{$rs->created_at}}</dd>
                                         
                                         <dt>Category:</dt>
-                                        <dd>Science &amp; Technology</dd>
+                                        <dd>{{$rs->videos_cat}}</dd>
                                         
                                         <dt>Video License</dt>
                                         <dd>Standard License</dd>
@@ -153,172 +153,36 @@
                         <div class="row m0 widget widget_popular_videos">
                             <h5 class="widget_title">more from the author</h5>
                             <div class="row m0 inner">
+                                @foreach($relation as $key => $value)
                                 <div class="media">
-                                    <div class="media-left"><a href="single-video.html"><img src="<?= THEME_PATH; ?>images/popular/1.jpg" alt=""><span class="duration">17:30</span></a></div>
+                                    <div class="media-left"><a href="/single-video-{{$value->id}}.html"><img src="http://img.youtube.com/vi/{{$value->videos_url}}/3.jpg" alt=""><span class="duration">17:30</span></a></div>
                                     <div class="media-body">
-                                        <a href="single-video.html">
-                                            <h5>Lorem ipsum dolor si amet etur adipis</h5>
+                                        <a href="/single-video-{{$value->id}}.html">
+                                            <h5>{{str_limit($value->videos_title,50)}}</h5>
                                         </a>
-                                        <div class="row m0 meta_info views">34,000 views</div>
+                                        <div class="row m0 meta_info views">{{number_format($value->videos_viewcount)}} views</div>
                                         <div class="row m0 meta_info posted">1 year ago</div>
                                     </div>
                                 </div>
-                                <div class="media">
-                                    <div class="media-left"><a href="single-video.html"><img src="<?= THEME_PATH; ?>images/popular/2.jpg" alt=""><span class="duration">17:30</span></a></div>
-                                    <div class="media-body">
-                                        <a href="single-video.html">
-                                            <h5>Lorem ipsum dolor si amet etur adipis</h5>
-                                        </a>
-                                        <div class="row m0 meta_info views">34,000 views</div>
-                                        <div class="row m0 meta_info posted">1 year ago</div>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="media-left"><a href="single-video.html"><img src="<?= THEME_PATH; ?>images/popular/3.jpg" alt=""><span class="duration">17:30</span></a></div>
-                                    <div class="media-body">
-                                        <a href="single-video.html">
-                                            <h5>Lorem ipsum dolor si amet etur adipis</h5>
-                                        </a>
-                                        <div class="row m0 meta_info views">34,000 views</div>
-                                        <div class="row m0 meta_info posted">1 year ago</div>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="media-left"><a href="single-video.html"><img src="<?= THEME_PATH; ?>images/popular/4.jpg" alt=""><span class="duration">17:30</span></a></div>
-                                    <div class="media-body">
-                                        <a href="single-video.html">
-                                            <h5>Lorem ipsum dolor si amet etur adipis</h5>
-                                        </a>
-                                        <div class="row m0 meta_info views">34,000 views</div>
-                                        <div class="row m0 meta_info posted">1 year ago</div>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                         <!--Recommended for You-->
                         <div class="row m0 widget widget_popular_videos">
                             <h5 class="widget_title">Recommended for you</h5>
                             <div class="row m0 inner">
+                                @foreach($newest as $key => $value)
                                 <div class="media">
-                                    <div class="media-left"><a href="single-video.html"><img src="<?= THEME_PATH; ?>images/popular/1.jpg" alt=""><span class="duration">17:30</span></a></div>
+                                    <div class="media-left"><a href="/single-video-{{$value->id}}.html"><img src="http://img.youtube.com/vi/{{$value->videos_url}}/3.jpg" alt=""><span class="duration">17:30</span></a></div>
                                     <div class="media-body">
-                                        <a href="single-video.html">
-                                            <h5>Lorem ipsum dolor si amet etur adipis</h5>
+                                        <a href="/single-video-{{$value->id}}.html">
+                                            <h5>{{str_limit($value->videos_title,50)}}</h5>
                                         </a>
-                                        <div class="row m0 meta_info views">34,000 views</div>
+                                        <div class="row m0 meta_info views">{{number_format($value->videos_viewcount)}} views</div>
                                         <div class="row m0 meta_info posted">1 year ago</div>
                                     </div>
                                 </div>
-                                <div class="media">
-                                    <div class="media-left"><a href="single-video.html"><img src="<?= THEME_PATH; ?>images/popular/2.jpg" alt=""><span class="duration">17:30</span></a></div>
-                                    <div class="media-body">
-                                        <a href="single-video.html">
-                                            <h5>Lorem ipsum dolor si amet etur adipis</h5>
-                                        </a>
-                                        <div class="row m0 meta_info views">34,000 views</div>
-                                        <div class="row m0 meta_info posted">1 year ago</div>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="media-left"><a href="single-video.html"><img src="<?= THEME_PATH; ?>images/popular/3.jpg" alt=""><span class="duration">17:30</span></a></div>
-                                    <div class="media-body">
-                                        <a href="single-video.html">
-                                            <h5>Lorem ipsum dolor si amet etur adipis</h5>
-                                        </a>
-                                        <div class="row m0 meta_info views">34,000 views</div>
-                                        <div class="row m0 meta_info posted">1 year ago</div>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="media-left"><a href="single-video.html"><img src="<?= THEME_PATH; ?>images/popular/4.jpg" alt=""><span class="duration">17:30</span></a></div>
-                                    <div class="media-body">
-                                        <a href="single-video.html">
-                                            <h5>Lorem ipsum dolor si amet etur adipis</h5>
-                                        </a>
-                                        <div class="row m0 meta_info views">34,000 views</div>
-                                        <div class="row m0 meta_info posted">1 year ago</div>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="media-left"><a href="single-video.html"><img src="<?= THEME_PATH; ?>images/popular/1.jpg" alt=""><span class="duration">17:30</span></a></div>
-                                    <div class="media-body">
-                                        <a href="single-video.html">
-                                            <h5>Lorem ipsum dolor si amet etur adipis</h5>
-                                        </a>
-                                        <div class="row m0 meta_info views">34,000 views</div>
-                                        <div class="row m0 meta_info posted">1 year ago</div>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="media-left"><a href="single-video.html"><img src="<?= THEME_PATH; ?>images/popular/2.jpg" alt=""><span class="duration">17:30</span></a></div>
-                                    <div class="media-body">
-                                        <a href="single-video.html">
-                                            <h5>Lorem ipsum dolor si amet etur adipis</h5>
-                                        </a>
-                                        <div class="row m0 meta_info views">34,000 views</div>
-                                        <div class="row m0 meta_info posted">1 year ago</div>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="media-left"><a href="single-video.html"><img src="<?= THEME_PATH; ?>images/popular/3.jpg" alt=""><span class="duration">17:30</span></a></div>
-                                    <div class="media-body">
-                                        <a href="single-video.html">
-                                            <h5>Lorem ipsum dolor si amet etur adipis</h5>
-                                        </a>
-                                        <div class="row m0 meta_info views">34,000 views</div>
-                                        <div class="row m0 meta_info posted">1 year ago</div>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="media-left"><a href="single-video.html"><img src="<?= THEME_PATH; ?>images/popular/4.jpg" alt=""><span class="duration">17:30</span></a></div>
-                                    <div class="media-body">
-                                        <a href="single-video.html">
-                                            <h5>Lorem ipsum dolor si amet etur adipis</h5>
-                                        </a>
-                                        <div class="row m0 meta_info views">34,000 views</div>
-                                        <div class="row m0 meta_info posted">1 year ago</div>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="media-left"><a href="single-video.html"><img src="<?= THEME_PATH; ?>images/popular/1.jpg" alt=""><span class="duration">17:30</span></a></div>
-                                    <div class="media-body">
-                                        <a href="single-video.html">
-                                            <h5>Lorem ipsum dolor si amet etur adipis</h5>
-                                        </a>
-                                        <div class="row m0 meta_info views">34,000 views</div>
-                                        <div class="row m0 meta_info posted">1 year ago</div>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="media-left"><a href="single-video.html"><img src="<?= THEME_PATH; ?>images/popular/2.jpg" alt=""><span class="duration">17:30</span></a></div>
-                                    <div class="media-body">
-                                        <a href="single-video.html">
-                                            <h5>Lorem ipsum dolor si amet etur adipis</h5>
-                                        </a>
-                                        <div class="row m0 meta_info views">34,000 views</div>
-                                        <div class="row m0 meta_info posted">1 year ago</div>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="media-left"><a href="single-video.html"><img src="<?= THEME_PATH; ?>images/popular/3.jpg" alt=""><span class="duration">17:30</span></a></div>
-                                    <div class="media-body">
-                                        <a href="single-video.html">
-                                            <h5>Lorem ipsum dolor si amet etur adipis</h5>
-                                        </a>
-                                        <div class="row m0 meta_info views">34,000 views</div>
-                                        <div class="row m0 meta_info posted">1 year ago</div>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="media-left"><a href="single-video.html"><img src="<?= THEME_PATH; ?>images/popular/4.jpg" alt=""><span class="duration">17:30</span></a></div>
-                                    <div class="media-body">
-                                        <a href="single-video.html">
-                                            <h5>Lorem ipsum dolor si amet etur adipis</h5>
-                                        </a>
-                                        <div class="row m0 meta_info views">34,000 views</div>
-                                        <div class="row m0 meta_info posted">1 year ago</div>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
