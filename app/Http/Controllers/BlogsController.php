@@ -81,6 +81,7 @@ class BlogsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $rs = $request->all();
         $data = [
             "blog_title"   => $rs["blog_title"],
             "blog_content" => $rs["blog_content"],
@@ -95,7 +96,6 @@ class BlogsController extends Controller
             $data["blog_image"] = $imageName;
             //
         }
-        $rs = $request->all();
         Blogs::where("id",$id)->update($data);
         return redirect('/blogs/'.$id);
     }
