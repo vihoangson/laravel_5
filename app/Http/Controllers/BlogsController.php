@@ -81,21 +81,21 @@ class BlogsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $data = [
+            "blog_title"   => $rs["blog_title"],
+            "blog_content" => $rs["blog_content"],
+        ];
         if(!empty($request->file('userfile'))){
             //Upload file
             $imageName = $request->file('userfile')->getClientOriginalName();
             $request->file('userfile')->move(
                 base_path() . '/public/uploads/', $imageName
                 );
-        }else{
-            $imageName="";
+            //Upload file
+            $data["blog_image"] = $imageName;
+            //
         }
         $rs = $request->all();
-        $data = [
-            "blog_title"   => $rs["blog_title"],
-            "blog_content" => $rs["blog_content"],
-            "blog_image"   => $imageName,
-        ];
         Blogs::where("id",$id)->update($data);
         return redirect('/blogs/'.$id);
     }

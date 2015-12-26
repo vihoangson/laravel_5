@@ -1,3 +1,4 @@
 cache
 bower_components
 /vendor
+/public/uploads/
