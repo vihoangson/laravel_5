@@ -27,7 +27,8 @@
                                     <div>                                    
                                         <h3><a href="#">{{$rs->blog_title}}</a></h3>
                                         {!! $rs->blog_content !!}
-                                        <a href="/blogs/{{$rs->id}}/edit">Edit</a>
+                                        <hr>
+                                        <p><i class="fa fa-clock-o"></i> {{$rs->updated_at}}  <a href="/blogs/{{$rs->id}}/edit">[Edit]</a></p>
                                     </div>
                                     <hr>
                             </div>

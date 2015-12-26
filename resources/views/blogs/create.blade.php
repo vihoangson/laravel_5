@@ -48,9 +48,9 @@
                                     </div>
                                     <label for="">Nội dung</label>
                                     <textarea style="height:100px;" name="blog_content" class="tinymce">{{(isset($rs->blog_content)?$rs->blog_content:"")}}</textarea>
-                                    <input type="file" name="userfile">
+                                    <div class="well"><input type="file" name="userfile"></div>
                                     <hr>
-                                    <p><button type="submit" class="btn btn-primary">Submit</button></p>
+                                    <p><button type="submit" class="btn btn-primary btn-block">Save</button></p>
                                 </form>                                
                             </div>
                         </div>

@@ -23,12 +23,18 @@
                             </div>
                         </div>
                         <div class="media bio_section">
-                            <div class="media-body author_desc_by_author">
+                            <div class="">
                                 @foreach($rs as $key => $value)
-                                    <div>                                    
+                                    <div>
+                                        @if ($value->blog_image)
+                                            @if(file_exists(base_path()."/public/uploads/".$value->blog_image))
+                                                <img src="/uploads/{{$value->blog_image}}" style="float:left;width:90px; margin-right:20px;">
+                                            @endif
+                                        @endif
                                         <h3><a href="/blogs/{{$value->id}}">{{$value->blog_title}}</a></h3>
-                                        {!! str_limit($value->blog_content,200) !!}
+                                        {{{ strip_tags($value->blog_content) }}}
                                     </div>
+                                    <div class="clearfix"></div>
                                     <hr>
                                 @endforeach
                             </div>
