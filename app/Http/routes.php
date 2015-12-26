@@ -13,6 +13,12 @@
 
 //article_category
 //
+Route::get('auth/login', 'Auth\AuthController@getLogin');
+Route::post('auth/login', 'Auth\AuthController@postLogin');
+Route::get('auth/logout', 'Auth\AuthController@getLogout');
+Route::get('auth/register', 'Auth\AuthController@getRegister');
+Route::post('auth/register', 'Auth\AuthController@postRegister');
+
 
 
 Route::post('/search.html', 'HomepageController@search');
@@ -29,7 +35,7 @@ Route::get('/category/{id}.html', "HomepageController@category");
 
 Route::get('/admin/import_video/', "admin\ImportvideoController@show");
 
-Route::get('/admin/', function(){
+Route::get('/admin/',  function(){
 	return view("admin.index");
 });
 

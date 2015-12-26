@@ -149,6 +149,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="<?= THEME_PATH; ?>login.html">Login</a></li>
                         <li><a href="<?= THEME_PATH; ?>signup-popup.html">Sign Up</a></li>
+                        <li><a href="/auth/logout">Logout</a></li>
                         <li><a href="<?= THEME_PATH; ?>page-author.html">Auther Profile</a></li>
                     </ul>
                 </li>

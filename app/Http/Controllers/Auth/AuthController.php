@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Session;
 use App\User;
 use Validator;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
@@ -61,5 +63,17 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+    public function postLogin(Request  $request){
+        if(\Input::get("password")== AUTH_PASSWORD){
+            Session::put("user","ok");            
+        }
+        return redirect('/');
+    }
+
+    public function getLogout(){
+        Session::remove("user");
+        return redirect('/');
     }
 }

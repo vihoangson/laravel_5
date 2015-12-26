@@ -14,6 +14,9 @@ class HomepageController extends Controller
 	public function __construct(){
 		define("API_GOOGLE","AIzaSyClzC3syB5Ig4vpjgsvkHF2mEU9kTpi4C4");
 		$this->video_per_result = 50;
+		if(\Session::get("user")!="ok"){
+			$this->middleware('auth');
+		}
 	}
 
 	public function show(){

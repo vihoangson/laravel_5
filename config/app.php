@@ -1,6 +1,8 @@
 <?php
 define("PATH_APP",'/assets/themes/basic/');
 define("THEME_PATH",'/assets/template/video2/');
+define("AUTH_PASSWORD",'111222333');
+
 return [
 
     /*
