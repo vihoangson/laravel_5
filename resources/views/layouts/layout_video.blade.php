@@ -130,6 +130,8 @@
                             <span class="extra_pages_icon"></span>Extra pages
                         </a>
                         <ul class="dropdown-menu">
+                            <li><a href="/blogs">Blogs</a></li>
+                            <li><a href="/blogs/create"><i class="fa fa-plus"></i> Thêm bài viết</a></li>
                             <li><a href="<?= THEME_PATH; ?>login.html">Login</a></li>
                             <li><a href="<?= THEME_PATH; ?>signup-popup.html">Sign Up</a></li>
                             <li><a href="<?= THEME_PATH; ?>single-video.html">Single Video</a></li>
@@ -216,14 +218,16 @@
             </div>
         </div>
     </section>
-    
-		@section("content_page")
-		@show
+        <div class="container">
+            @yield('breadcrumbs')
+        </div>
+        @section("content_page")
+        @show
 
-		@section("content_list_video")
-		@show
+        @section("content_list_video")
+        @show
 
-		@section("detail_page")
+        @section("detail_page")
 		@show
 
 		@section("slide1")
