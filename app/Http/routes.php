@@ -37,7 +37,7 @@ Route::get('/category/{id}.html', "HomepageController@category");
 
 
 Route::get('/admin/import_video/', "admin\ImportvideoController@show");
-
+Route::get('/admin/import_video/cron_tab', "admin\ImportvideoController@cron_tab");
 Route::get('/admin/',  function(){
 	return view("admin.index");
 });
