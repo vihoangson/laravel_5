@@ -15,7 +15,7 @@ class ImportvideoController extends Controller
 
 	public function __construct(){
 		define("API_GOOGLE","AIzaSyClzC3syB5Ig4vpjgsvkHF2mEU9kTpi4C4");
-		$this->video_per_result = 50;
+		$this->video_per_result = 5;
 	}
 
 	public static function cron_tab(){
