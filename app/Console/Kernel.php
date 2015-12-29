@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         \App\Console\Commands\Inspire::class,
         \App\Console\Commands\Sendmail_cron::class,
+        \App\Console\Commands\Check_video::class,
     ];
 
     /**
@@ -28,6 +29,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('sendmail_cron')
                  ->dailyAt('23:50')
                  ;
+        $schedule->command('check_video')
+                 ->dailyAt('23:00')
+                 ;
+
         // $schedule->call(function(){
         //     ImportvideoController::cron_tab();
         // });

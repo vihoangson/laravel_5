@@ -121,23 +121,21 @@ class ImportvideoController extends Controller
 	///////
 	// Tự động tìm và xóa các file đã disable
 	///////
-	private function find_and_delete_video_disable(){
-		return;
+	public function find_and_delete_video_disable(){
 		$log = "Start: ".__FUNCTION__." ";
 		$log .= "Các video bị chết: ";
 		$rs = Videos::all();
 		foreach($rs as $key => $value){
-			$data = ($this->get_detail_video($value->videos_url,["part" => 'status']));
-			if(empty($data)){
-				$value->delete();
-				$log .= "".$value->videos_url.", ";
-				echo "<hr>";
+			if(vaild_youtube("http://img.youtube.com/vi/".$value->videos_url."/0.jpg")!="video valid"){
+				echo $value->videos_url."
+				";
+				Log::info($value->videos_url);
 			}else{
-				echo "<p>Pass</p>";
+				echo "Done: ".$value->videos_url."
+";
 			}
-			if($key>20){
 				break;
-			}
+
 		}
 		$log .= "Stop: ".__FUNCTION__." ";
 		Log::info($log);
