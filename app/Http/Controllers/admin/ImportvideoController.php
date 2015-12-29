@@ -24,16 +24,13 @@ class ImportvideoController extends Controller
 	}
 
 	public static function send_mail_to_me(){
+		$count = Videos::count();
 		$data = array(
-			'name' => date("Y-m-d")
+			'body' => "Tổng số record: ".$count
 			);
-
 		Mail::send('emails.welcome', $data, function ($message) {
-
-			$message->from('info@vihoangson.com', 'Được gửi đi từ Laravel');
-
-			$message->to('vihoangson@gmail.com')->subject('Learning Laravel test email');
-
+			$message->from('info@vihoangson.com', 'Vi Hoàng Sơn');
+			$message->to('vihoangson@gmail.com')->subject('Learning Laravel test email '.date("Y-m-d H:i:s"));
 		});
 	}
 

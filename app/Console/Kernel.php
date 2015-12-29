@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Console;
-
+use App\Http\Controllers\admin\ImportvideoController;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Console\Commands\Inspire::class,
+        \App\Console\Commands\Sendmail_cron::class,
     ];
 
     /**
@@ -24,7 +25,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('inspire')
-                 ->everyMinute();
+        $schedule->command('sendmail_cron')
+                 ->dailyAt('23:50')
+                 ;
+        // $schedule->call(function(){
+        //     ImportvideoController::cron_tab();
+        // });
     }
 }

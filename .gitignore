@@ -2,3 +2,5 @@ cache
 bower_components
 /vendor
 /public/uploads/
+composer.phar
+storage/phapthi.sqlite
