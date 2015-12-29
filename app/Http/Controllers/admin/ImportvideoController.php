@@ -33,7 +33,15 @@ class ImportvideoController extends Controller
 			$message->to('vihoangson@gmail.com')->subject('Learning Laravel test email '.date("Y-m-d H:i:s"));
 		});
 	}
-
+	public static function send_mail_to_me_with_content($content){				
+		$data = array(
+			'body' => "<p>Nội dung send_mail_to_me_with_content : ".$content."</p>"
+			);
+		Mail::send('emails.welcome', $data, function ($message) {
+			$message->from('info@vihoangson.com', 'Vi Hoàng Sơn');
+			$message->to('vihoangson@gmail.com')->subject('Nội dung send_mail_to_me_with_content '.date("Y-m-d H:i:s"));
+		});
+	}
 	public function show(){
 
 		///////

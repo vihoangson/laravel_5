@@ -32,5 +32,6 @@ class Check_video extends Command
     {
         $import = new ImportvideoController();
         $import->find_and_delete_video_disable();
+        $import->send_mail_to_me_with_content("Hoàn thành xong find_and_delete_video_disable");        
     }
 }
