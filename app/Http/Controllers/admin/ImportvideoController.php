@@ -129,13 +129,11 @@ class ImportvideoController extends Controller
 			if(vaild_youtube("http://img.youtube.com/vi/".$value->videos_url."/0.jpg")!="video valid"){
 				echo $value->videos_url."
 				";
-				Log::info($value->videos_url);
+				Log::info("Delete: ".$value->videos_url."");
 			}else{
 				echo "Done: ".$value->videos_url."
 ";
 			}
-				break;
-
 		}
 		$log .= "Stop: ".__FUNCTION__." ";
 		Log::info($log);
