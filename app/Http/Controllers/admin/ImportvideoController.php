@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\Http\Requests\CheckArticlesRequest;
 use App\Http\Controllers\Controller;
 use google\apiclient\src\Google\Service\YouTube;
-
+use Illuminate\Console\Command;
 class ImportvideoController extends Controller
 {
 	private $info_log=[];
@@ -16,28 +16,28 @@ class ImportvideoController extends Controller
 	public function __construct(){
 		define("API_GOOGLE","AIzaSyClzC3syB5Ig4vpjgsvkHF2mEU9kTpi4C4");
 		$this->video_per_result = 50;
-		if(\Session::get("user")!="ok"){
-			$this->middleware('auth');
-		}
+	}
+
+	public static function cron_tab(){
+		Log::info("Do crontab at: ".date("Y-m-d h:i:s"));
+		self::send_mail_to_me();
+	}
+
+	public static function send_mail_to_me(){
+		$data = array(
+			'name' => date("Y-m-d")
+			);
+
+		Mail::send('emails.welcome', $data, function ($message) {
+
+			$message->from('info@vihoangson.com', 'Được gửi đi từ Laravel');
+
+			$message->to('vihoangson@gmail.com')->subject('Learning Laravel test email');
+
+		});
 	}
 
 	public function show(){
-
-
-    // $data = array(
-    //     'name' => "Learning Laravel",
-    // );
-
-    // Mail::send('emails.welcome', $data, function ($message) {
-
-    //     $message->from('info@vihoangson.com', 'Learning Laravel');
-
-    //     $message->to('vihoangson@gmail.com')->subject('Learning Laravel test email');
-
-    // });
-
-    // return "Your email has been sent successfully";
-
 
 		///////
 		// Tự động lấy tin theo từ khóa
@@ -73,7 +73,7 @@ class ImportvideoController extends Controller
 				$this->find_duplicate_row_and_delete();
 			break;
 			case "find_and_delete_video_disable":
-				//return false;
+				return false;
 				$this->find_and_delete_video_disable();
 			break;
 			case "update_summary_to_viewcount":
@@ -125,17 +125,21 @@ class ImportvideoController extends Controller
 	// Tự động tìm và xóa các file đã disable
 	///////
 	private function find_and_delete_video_disable(){
+		return;
 		$log = "Start: ".__FUNCTION__." ";
 		$log .= "Các video bị chết: ";
-		$rs = Videos::limit(1000)->get();
+		$rs = Videos::all();
 		foreach($rs as $key => $value){
-			$status = vaild_youtube('http://img.youtube.com/vi/'.$value->videos_url.'/3.jpg');
-			if($status=="video valid"){
-				$this->info_log[] = "Tồn tại: ".$value->videos_url;
-			}else{
-				$this->info_log[] = "Không tồn tại: ".$value->videos_url;
-				Log::info("Không còn sử dụng".$value->videos_url);
+			$data = ($this->get_detail_video($value->videos_url,["part" => 'status']));
+			if(empty($data)){
 				$value->delete();
+				$log .= "".$value->videos_url.", ";
+				echo "<hr>";
+			}else{
+				echo "<p>Pass</p>";
+			}
+			if($key>20){
+				break;
 			}
 		}
 		$log .= "Stop: ".__FUNCTION__." ";
