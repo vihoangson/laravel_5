@@ -12,11 +12,15 @@ use Illuminate\Console\Command;
 class ImportvideoController extends Controller
 {
 	private $info_log=[];
-	public $count_import = 50;
+	public $var_log_count_import = 0;
+
+	/*
+	* Number of result every import
+	*/
+	public $video_per_result = 50;
 
 	public function __construct(){
 		define("API_GOOGLE","AIzaSyClzC3syB5Ig4vpjgsvkHF2mEU9kTpi4C4");
-		$this->video_per_result = 50;
 	}
 
 	public static function cron_tab(){
@@ -291,7 +295,8 @@ class ImportvideoController extends Controller
 				"videos_duration"  => $videos_summary[0]->contentDetails->duration,
 			];
 			if(Videos::create($data_video)){
-				$this->count_import++;
+				$this->var_log_count_import++;
+				echo "Imported: ".$value["videoId"].PHP_EOL;
 				$i++;
 			}
 
