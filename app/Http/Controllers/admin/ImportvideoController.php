@@ -42,10 +42,12 @@ class ImportvideoController extends Controller
 		$data = array(
 			'body' => "<p>Nội dung send_mail_to_me_with_content : ".$content."</p>"
 			);
+
 		Mail::send('emails.welcome', $data, function ($message) {
 			$message->from('info@vihoangson.com', 'Vi Hoàng Sơn');
 			$message->to('vihoangson@gmail.com')->subject('Nội dung send_mail_to_me_with_content '.date("Y-m-d H:i:s"));
 		});
+		Log::info("[Send_mail_to_me_with_content] :".$data["body"]);
 	}
 	public function show(){
 
@@ -210,7 +212,7 @@ class ImportvideoController extends Controller
 	///////
 	// Tìm và xóa cái video bị trùng
 	///////
-	private function find_duplicate_row_and_delete(){
+	public function find_duplicate_row_and_delete(){
 		$rs = \DB::table("videos")
 			->select(\DB::raw('id, videos_url'))
 			->groupBy('videos_url')
