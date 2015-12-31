@@ -13,7 +13,57 @@
         "insertdatetime media table contextmenu paste imagetools"
         ],
     });
+
+    $(document).ready(function() {
+    });
+    $(".button-media").click(function(event) {
+        $.ajax({
+            url: '/blogs/popup_img',
+            type: 'GET',
+            dataType: 'html',
+            data: {param1: 'value1'},
+        })
+        .done(function(data) {
+            $(".modal-body").html(data);
+            click_img();
+            console.log("success");
+        })
+        .fail(function() {
+            console.log("error");
+        })
+        .always(function() {
+            console.log("complete");
+        });
+                
+        $("#modal-id").modal();
+    });
+    function click_img(){
+        $("img").click(function(){
+            var sssc = "<p><img src='"+$(this).attr("src")+"'></p>";
+            var $body = $(tinymce.activeEditor.getBody());
+            $body.find('p:last').append(sssc)
+            console.log($body);
+            //$body.find('p:last').append($('<span>text blah blah</span>'))
+        });
+    }
   </script>
+<div class="modal fade" id="modal-id">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @section("detail_page")
 <section class="row post_page_sidebar post_page_sidebar1">
@@ -47,6 +97,7 @@
                                         <input type="text" name="blog_title" class="form-control" id="" placeholder="Input field" value="{{(isset($rs->blog_title)?$rs->blog_title:"")}}">
                                     </div>
                                     <label for="">Nội dung</label>
+                                    <p><button type="button" class="btn btn-default button-media">Media</button></p>
                                     <textarea style="height:100px;" name="blog_content" class="tinymce">{{(isset($rs->blog_content)?$rs->blog_content:"")}}</textarea>
                                     <div class="well"><input type="file" name="userfile"></div>
                                     <hr>

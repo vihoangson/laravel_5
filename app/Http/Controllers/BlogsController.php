@@ -110,4 +110,14 @@ class BlogsController extends Controller
     {
         //
     }
+
+    public function popup_img(){
+        $dir = scandir(base_path() . '/public/uploads/media');
+        foreach ($dir as $key => $value) {
+            if($value!="."||$value!=".."){
+                echo $value;
+            }
+        }
+        echo "<img src='http://findicons.com/files/icons/474/nature/128/red_flower.png'>";
+    }
 }
