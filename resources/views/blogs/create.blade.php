@@ -39,11 +39,12 @@
     });
     function click_img(){
         $("img").click(function(){
-            var sssc = "<p><img src='"+$(this).attr("src")+"'></p>";
+            var sssc = "<p><img style='width:100px;' src='"+$(this).attr("src")+"'></p>";
             var $body = $(tinymce.activeEditor.getBody());
-            $body.find('p:last').append(sssc)
-            console.log($body);
-            //$body.find('p:last').append($('<span>text blah blah</span>'))
+            var sel = tinyMCE.activeEditor.selection;
+            sel.setContent(sssc);  
+            $("#modal-id").modal('hide');
+
         });
     }
   </script>
