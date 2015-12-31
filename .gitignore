@@ -4,3 +4,4 @@ bower_components
 /public/uploads/
 composer.phar
 storage/phapthi.sqlite
+public/media
