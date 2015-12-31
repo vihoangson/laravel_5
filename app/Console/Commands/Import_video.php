@@ -91,6 +91,6 @@ class Import_video extends Command
         $keywords = implode(",", $data_import);
         $import->video_per_result = 100;
         $import->auto_get_video($keywords);
-        $import->send_mail_to_me_with_content("Hoàn thành xong auto_get_video Tổng cộng: ".$import->var_log_count_import." video");
+        $import->send_mail_to_me_with_content("<h2>Hoàn thành xong auto_get_video</h2> ".PHP_EOL." Keywords: ".$keywords."".PHP_EOL." Tổng cộng: ".$import->var_log_count_import." video");
     }
 }
