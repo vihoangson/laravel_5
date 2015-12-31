@@ -21,7 +21,8 @@ Route::post('auth/register', 'Auth\AuthController@postRegister');
 
 Route::get('home', 'HomepageController@show');
 
-Route::resource('blogs/popup_img', 'BlogsController@popup_img');
+Route::post('blogs/post_popup_img', 'BlogsController@post_popup_img');
+Route::get('blogs/popup_img', 'BlogsController@popup_img');
 Route::resource('blogs', 'BlogsController');
 
 

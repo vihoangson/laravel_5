@@ -1,3 +1,6 @@
 body{
 	
 }
+img.img_in_content {
+    max-width: 100%;
+}

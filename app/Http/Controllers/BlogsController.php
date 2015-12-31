@@ -113,11 +113,29 @@ class BlogsController extends Controller
 
     public function popup_img(){
         $dir = scandir(base_path() . '/public/media');
+        echo '<div class="row">';
         foreach ($dir as $key => $value) {
-            if(preg_match("/.(png|jpg|gif)/", $value)){
-                echo "<p><img style='width:200px;' src='/media/".$value."'></p>";
-                echo "<br>";
+            if(preg_match("/.(png|jpg|gif|PNG|JPG|GIF)/", $value)){
+                echo "<div class='col-md-3'><div class='thumbnail'><img style='width:200px;' src='/media/".$value."'></div></div>";
+                
             }
         }
+        echo '</div>';
+    }
+    public function post_popup_img(Request $request){
+        if(!empty($request->file('userfile'))){
+            //Upload file
+            $imageName = $request->file('userfile')->getClientOriginalName();
+            $request->file('userfile')->move(
+                base_path() . '/public/media/', $imageName
+                );
+            //Upload file
+            $data["blog_image"] = $imageName;
+            echo '<span class="label label-success">Done</span>';
+            //
+        }else{
+            echo '<span class="label label-danger">Error</span>';
+        }
+        return;
     }
 }
