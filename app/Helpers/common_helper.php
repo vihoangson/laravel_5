@@ -1,4 +1,17 @@
 <?php 
+
+function resize_img($image_object,$path){
+    if(file_exists($path)){
+        $info_s = getimagesize($path);
+        if($info_s[0]>1000){
+            $image_object->make($path)->resize(1000, null, function ($constraint) { $constraint->aspectRatio(); })->save($path);
+        }elseif($info_s[1]>1000){
+            $image_object->make($path)->resize(null, 1000, function ($constraint) { $constraint->aspectRatio(); })->save($path);
+        }else{
+            echo "file nhỏ";
+        }
+    }
+}
 if ( ! function_exists( 'd' ) ) {
 	function d( $data )
 	{

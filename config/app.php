@@ -148,7 +148,7 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
+        App\Providers\RouteServiceProvider::class,        
 
     ],
 
@@ -200,6 +200,7 @@ return [
         'View'      => Illuminate\Support\Facades\View::class,
         'Form'      => Illuminate\Html\FormFacade::class,
         'View'      => Illuminate\Html\HtmlFacade::class,
+        "Image"     => Intervention\Image\ImageManager::class,
     ],
 
 ];

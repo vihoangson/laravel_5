@@ -16,30 +16,28 @@
     $(document).ready(function() {  
         var options = { 
             target:   '#output', 
-            //beforeSubmit:  beforeSubmit,
+            beforeSubmit:  beforeSubmit,
             uploadProgress: OnProgress, //upload progress callback 
             success:       afterSuccess,
             resetForm: true  
         }; 
-        
         $('#MyUploadForm').submit(function() { 
             $(this).ajaxSubmit(options);            
             return false; 
         });
     });
     function afterSuccess(){
-        window.setTimeout(function(){$("#output").html("")},3000)
+            $(".progress-bar").css({"width":"0%"});
+    }
+    function beforeSubmit(){
+        //$("#progressbox").show();
+        //$("#output").load("/blogs/popup_img");
+
     }
     function OnProgress(event, position, total, percentComplete)
     {
-        //Progress bar
-        console.log(percentComplete);
-        // progressbar.width(percentComplete + '%') //update progressbar percent complete
-        // statustxt.html(percentComplete + '%'); //update status text
-        // if(percentComplete>50)
-        //     {
-        //         statustxt.css('color','#fff'); //change status text to white after 50%
-        //     }
+        $(".progress-bar").css({"width":percentComplete+"%"});
+        
     }
     $(".button-media").click(function(event) {
         $("#modal-id .modal-body").html('<div class="loading_box"><h3><i class="fa fa-refresh fa-spin"></i> Loading...</h3></div>');
@@ -68,10 +66,14 @@
             var sel = tinyMCE.activeEditor.selection;
             sel.setContent(html_img);  
             $("#modal-id").modal('hide');
+            $("#modal-id-upload").modal('hide');
 
         });
     }
     $(".bton-upload").click(function(){
+        $("#output").load("/blogs/popup_img",function (){
+            click_img();
+        });
         $("#modal-id-upload").modal();
     });
 </script>
@@ -115,6 +117,13 @@
                                             <input name="_token" value="{{csrf_token()}}" type="hidden">
                                             <input name="userfile" id="imageInput" class="form-control" type="file" />
                                             <img src="images/ajax-loader.gif" id="loading-img" style="display:none;" alt="Please Wait"/>
+
+
+<div class="progress">
+  <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+  </div>
+</div>
+
                                             <div id="progressbox" style="display:none;"><div id="progressbar"></div ><div id="statustxt">0%</div></div>
                                             <div id="output"></div>
                                         </div>

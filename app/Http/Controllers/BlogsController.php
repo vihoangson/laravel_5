@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Blogs;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use Image;
 class BlogsController extends Controller
 {
     /**
@@ -131,7 +131,12 @@ class BlogsController extends Controller
                 );
             //Upload file
             $data["blog_image"] = $imageName;
-            echo '<span class="label label-success">Done</span>';
+
+            $path = base_path() . '/public/media/'.$imageName;
+            $image_object = new Image(array('driver' => 'gd'));
+            resize_img($image_object,$path);
+
+            //echo '<span class="label label-success">Done</span>';
             //
         }else{
             echo '<span class="label label-danger">Error</span>';
