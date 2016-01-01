@@ -3,7 +3,7 @@
                         <a href="/single-video-{{$value->id}}.html"><div class="row screencast m0">
                             <img src="http://img.youtube.com/vi/{{$value->videos_url}}/0.jpg" alt="" class="cast img-responsive">
                             <div class="play_btn"></div>
-                            <div class="media-length">17:30</div>
+                            <div class="media-length">{{show_durationsss($value->videos_duration)}}</div>
                         </div></a>
                         <div class="row m0 post_data">
                             <div class="row m0"><a href="/single-video-{{$value->id}}.html" class="post_title">{{str_limit($value->videos_title,25)}}</a></div>

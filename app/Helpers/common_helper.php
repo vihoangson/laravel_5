@@ -1,4 +1,17 @@
 <?php 
+//{{show_durationsss($value->videos_duration)}}
+function show_durationsss($string=null){
+	preg_match("/PT(\d+)M(\d+)S/", $string, $match);
+	if(!empty($match[1])){
+		return $match[1].":".$match[2];
+	}elseif(preg_match("/PT(\d+)H(\d+)M(\d+)S/", $string, $match)){
+		//preg_match("/PT(\d+)H(\d+)M(\d+)S/", $string, $match);
+		return $match[1].":".$match[2].":".$match[2];
+	}
+	// $match=[];
+	// $mmm = "sss".$match[1];
+	// return 'ss__'."ss"."__"."sssddsd".$mmm;
+}
 
 function resize_img($image_object,$path){
     if(file_exists($path)){

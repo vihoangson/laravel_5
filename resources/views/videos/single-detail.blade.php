@@ -1,5 +1,5 @@
 @extends("layouts/layout_video")
-@section("title","Video")
+@section("title",$rs->videos_title)
 
 
 @section("detail_page")
@@ -101,7 +101,7 @@
                             <div class="row m0 inner">
                                 @foreach($relation as $key => $value)
                                 <div class="media">
-                                    <div class="media-left"><a href="/single-video-{{$value->id}}.html"><img src="http://img.youtube.com/vi/{{$value->videos_url}}/3.jpg" alt=""><span class="duration">17:30</span></a></div>
+                                    <div class="media-left"><a href="/single-video-{{$value->id}}.html"><img src="http://img.youtube.com/vi/{{$value->videos_url}}/3.jpg" alt=""><span class="duration">{{show_durationsss($value->videos_duration)}}</span></a></div>
                                     <div class="media-body">
                                         <a href="/single-video-{{$value->id}}.html">
                                             <h5>{{str_limit($value->videos_title,50)}}</h5>
@@ -119,7 +119,7 @@
                             <div class="row m0 inner">
                                 @foreach($newest as $key => $value)
                                 <div class="media">
-                                    <div class="media-left"><a href="/single-video-{{$value->id}}.html"><img src="http://img.youtube.com/vi/{{$value->videos_url}}/3.jpg" alt=""><span class="duration">17:30</span></a></div>
+                                    <div class="media-left"><a href="/single-video-{{$value->id}}.html"><img src="http://img.youtube.com/vi/{{$value->videos_url}}/3.jpg" alt=""><span class="duration">{{show_durationsss($value->videos_duration)}}</span></a></div>
                                     <div class="media-body">
                                         <a href="/single-video-{{$value->id}}.html">
                                             <h5>{{str_limit($value->videos_title,50)}}</h5>
