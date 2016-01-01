@@ -29,6 +29,7 @@ class ImportvideoController extends Controller
 	}
 
 	public static function send_mail_to_me(){
+		copy(storage_path('phapthi.sqlite'),storage_path('phapthi_'.date("Y-m-d__H:i:s").'.sqlite'));
 		$count = Videos::count();
 		$data = array(
 			'body' => "Tổng số record: ".$count
