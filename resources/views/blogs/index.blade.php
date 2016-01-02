@@ -35,6 +35,10 @@
                                         {{{ strip_tags($value->blog_content) }}}
                                     </div>
                                     <div class="clearfix"></div>
+                                    @if(SHOW_EDIT_DELETE)
+                                        <a href="/blogs/{{$value->id}}/edit"  class="btn btn-info"><i class="fa fa-pencil"></i> [Edit]</a>
+                                        <a href='/blogs/delete/{{$value->id}}' class="btn btn-danger"><i class="fa fa-trash"></i> [Delete]</a>
+                                    @endif
                                     <hr>
                                 @endforeach
                             </div>

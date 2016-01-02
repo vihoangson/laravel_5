@@ -139,7 +139,7 @@
 
                     <form action="/blogs/{{(isset($rs->id)?$rs->id:"post_newblog")}}" method="POST" role="form" enctype="multipart/form-data">
                         <div class="row">
-                            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">                            
+                            <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">                            
                                 <div class="">
                                     {!! (isset($rs->id)?'<input type="hidden" name="_method" value="put" />':"") !!}
                                     <input name="_token" value="{{csrf_token()}}" type="hidden">
@@ -152,17 +152,19 @@
                                     <p><button type="button" class="btn btn-default button-media"><i class="fa fa-image"></i> Media</button>
                                         <button type="button" class='bton-upload btn btn-default'><i class="fa fa-upload"></i> Upload file</button></p>
                                         <textarea style="height:500px;" name="blog_content" class="tinymce">{{(isset($rs->blog_content)?$rs->blog_content:"")}}</textarea>
-                                        <div class="well"><input type="file" name="userfile"></div>
                                         <hr>
                                     </div>
                                 </div>
-                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                    <div class="panel panel-info">
-                                      <div class="panel-heading">
-                                        <h3 class="panel-title">Panel title</h3>
-                                    </div>
-                                    <div class="panel-body">
-                                        <button type="submit" class="btn btn-primary btn-block">Save</button>   
+                                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                                    <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-floppy-o"></i> Save</button>
+                                    @if(isset($rs->id))
+                                    <a href='/blogs/delete/{{$rs->id}}' class=""><i class="fa fa-trash"></i> Move to trash</a>
+                                    @endif
+                                    <hr>
+                                    <div class="well">
+                                        <h4>Feature image</h4>
+                                        <input type="file" name="userfile">
+                                        {!! (isset($rs->blog_image)?"<div class='thumbnail'><img style='width:100px;' src='/uploads/".$rs->blog_image."'></div>":"") !!}
                                     </div>
                                 </div>
                             </div>

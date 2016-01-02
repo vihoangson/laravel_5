@@ -44,6 +44,7 @@ class BlogsController extends Controller
         "blog_content" => $request->get("blog_content"),
         
         ];
+        $this->upload_file_blog($request,$data);
         Blogs::create($data);
         return redirect("/blogs");
     }
@@ -86,6 +87,12 @@ class BlogsController extends Controller
             "blog_title"   => $rs["blog_title"],
             "blog_content" => $rs["blog_content"],
         ];
+        $this->upload_file_blog($request,$data);
+        Blogs::where("id",$id)->update($data);
+        return redirect('/blogs/'.$id);
+    }
+
+    private function upload_file_blog($request,&$data){
         if(!empty($request->file('userfile'))){
             //Upload file
             $imageName = $request->file('userfile')->getClientOriginalName();
@@ -94,10 +101,7 @@ class BlogsController extends Controller
                 );
             //Upload file
             $data["blog_image"] = $imageName;
-            //
         }
-        Blogs::where("id",$id)->update($data);
-        return redirect('/blogs/'.$id);
     }
 
     /**
@@ -108,7 +112,10 @@ class BlogsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if(Blogs::find($id)->delete()){
+            return redirect('/blogs/');
+        }
+
     }
 
     public function popup_img(){
