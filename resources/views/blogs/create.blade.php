@@ -116,7 +116,7 @@
                                         <div class='box-upload'>                        
                                             <input name="_token" value="{{csrf_token()}}" type="hidden">
                                             <input name="userfile" id="imageInput" class="form-control" type="file" />
-                                            <img src="images/ajax-loader.gif" id="loading-img" style="display:none;" alt="Please Wait"/>
+                                            {{-- <img src="images/ajax-loader.gif" id="loading-img" style="display:none;" alt="Please Wait"/> --}}
 
 
 <div class="progress">
@@ -137,7 +137,7 @@
                         </div>
                     </div>
 
-                    <form action="/blogs/{{(isset($rs->id)?$rs->id:"")}}" method="POST" role="form" enctype="multipart/form-data">
+                    <form action="/blogs/{{(isset($rs->id)?$rs->id:"post_newblog")}}" method="POST" role="form" enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">                            
                                 <div class="">

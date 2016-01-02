@@ -23,6 +23,7 @@ Route::get('home', 'HomepageController@show');
 
 Route::post('blogs/post_popup_img', 'BlogsController@post_popup_img');
 Route::get('blogs/popup_img', 'BlogsController@popup_img');
+Route::post('blogs/post_newblog','BlogsController@store');
 Route::resource('blogs', 'BlogsController');
 
 
