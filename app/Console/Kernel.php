@@ -28,6 +28,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+
+        $schedule->command('get_video_channel')
+                 ->dailyAt('1:00')
+                 ;
+
         $schedule->command('send_db')
                  ->dailyAt('23:30')
                  ;
@@ -37,8 +42,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('import_video')
                  ->dailyAt('02:00')
                  ;
-        // $schedule->call(function(){
-        //     ImportvideoController::cron_tab();
-        // });
+
+        // $schedule->command('get_video_channel')
+        //          ->cron('* * * * * *')
+        //          ;
+
     }
 }

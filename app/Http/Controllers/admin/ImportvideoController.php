@@ -39,14 +39,14 @@ class ImportvideoController extends Controller
 			$message->to('vihoangson@gmail.com')->subject('Learning Laravel test email '.date("Y-m-d H:i:s"));
 		});
 	}
-	public static function send_mail_to_me_with_content($content){				
+	public static function send_mail_to_me_with_content($content,$subject=null,$name=null){				
 		$data = array(
 			'body' => "<p>Nội dung send_mail_to_me_with_content : ".$content."</p>"
 			);
 
 		Mail::send('emails.welcome', $data, function ($message) {
-			$message->from('info@vihoangson.com', 'Vi Hoàng Sơn');
-			$message->to('vihoangson@gmail.com')->subject('Nội dung send_mail_to_me_with_content '.date("Y-m-d H:i:s"));
+			$message->from('info@vihoangson.com', (isset($name)?$name:'Vi Hoàng Sơn'));
+			$message->to('vihoangson@gmail.com')->subject((isset($subject)?$subject:'Nội dung send_mail_to_me_with_content '.date("Y-m-d H:i:s")));
 		});
 		Log::info("[Send_mail_to_me_with_content] :".$data["body"]);
 	}
@@ -428,13 +428,13 @@ class ImportvideoController extends Controller
 	public function get_video_channel(){
 		$list_channel = [
 			[
-				'forUsername' => "vtvbooiminhdidauthe",
+				'forUsername' => "vtvbooiminhdidauthe",//Bối ơi mình đi đâu thế
 			],
 			[
 				'id' => "UCCkitjrMbVi6wKc3vOeC9lw"// Bữa trưa vui vẻ
 			],
 			[
-				'forUsername' => "ONGIOICAUDAYROIVTV3"// Bữa trưa vui vẻ
+				'forUsername' => "ONGIOICAUDAYROIVTV3"// Ơn giời cậu đây rồi
 			],
 			[
 				'forUsername' => "vtvcapdoihoanhao"// Bữa trưa vui vẻ
@@ -443,11 +443,15 @@ class ImportvideoController extends Controller
 				'id' => "UCwmurIyZ6FHyVPtKppe_2_A"// Thách thức danh hài
 			],
 			[
-				'forUsername' => "handangplus"// Bữa trưa vui vẻ
+				'forUsername' => "handangplus"// Vui cười
 			],
 			[
 				'id' => "UCo7vprERng61p_oM9UjayrQ"// Film bộ nước ngoài
 			],
+			[
+				'id' => "UC_diyokvxyt0-nl_bCfk8vw"// Film hàn quốc
+			],
+			
 		];
 		if(!empty($list_channel)){
 			foreach ($list_channel as $key => $value) {
@@ -455,10 +459,6 @@ class ImportvideoController extends Controller
 			}
 			$this->get_content_file_video();
 		}
-		//pageToken
-
-		// Làm tạm
-		//
 	}
 
 	public function show_get_video_channel(){
@@ -467,12 +467,13 @@ class ImportvideoController extends Controller
 	}
 
 	private function get_data_video_channel($id_channel){
+		$max_page_get=(env("MAX_PAGE_IMPORT")?env("MAX_PAGE_IMPORT")+1:10);
 		$list_id = ($this->get_id_channel($id_channel));
 		$i=0;
 		$pageToken=null;
 		while(true){
 			$i++;
-			if($i==2)
+			if($i==$max_page_get)
 				break;
 
 				echo '$i: '.$i.PHP_EOL;
@@ -498,14 +499,10 @@ class ImportvideoController extends Controller
 				curl_close($curl);
 				$responseObj = @json_decode($json_response);
 				$total[] = $responseObj;
-				break;
 				if(!empty($responseObj->nextPageToken)){
 					$pageToken = $responseObj->nextPageToken;
 				}else{
 					$pageToken = '';
-					break;
-				}
-				if($pageToken==''){
 					break;
 				}
 		}//while
@@ -542,29 +539,24 @@ class ImportvideoController extends Controller
 
 
 
-public function get_content_file_video(){
-	$path = storage_path().'/data_video/';
-	$dir = scandir($path);
-	foreach ($dir as $key => $value) {
-		if(preg_match("/\.json$/",$value)){
-			$data = (json_decode(file_get_contents($path.$value)));
-			foreach ($data as $key2 => $value2) {
-				foreach ($value2->items as $key3 => $value3) {
-					$params[$key3]["videoId"] = $value3->snippet->resourceId->videoId;
-					$params[$key3]["title"] = $value3->snippet->title;
-					$params[$key3]["description"] = $value3->snippet->description;
-					$params["keywords"] = $value;
+	public function get_content_file_video(){
+		$path = storage_path().'/data_video/';
+		$dir = scandir($path);
+		foreach ($dir as $key => $value) {
+			if(preg_match("/\.json$/",$value)){
+				$data = (json_decode(file_get_contents($path.$value)));
+				foreach ($data as $key2 => $value2) {
+					foreach ($value2->items as $key3 => $value3) {
+						$params[$key3]["videoId"] = $value3->snippet->resourceId->videoId;
+						$params[$key3]["title"] = $value3->snippet->title;
+						$params[$key3]["description"] = $value3->snippet->description;
+						$params["keywords"] = str_replace(".json", "", $value);
+					}
+					$this->save_video_by_array($params);
 				}
-				$this->save_video_by_array($params);
 			}
 		}
 	}
-}
-
-
-
-
-
 
 
 }
