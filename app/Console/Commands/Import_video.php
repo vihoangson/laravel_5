@@ -28,8 +28,14 @@ class Import_video extends Command
      * @return mixed
      */
     
-    public function handle()
-    {
+    public function handle(){
+        $m = config("video.vus.vn.config.video_tag");
+        print_r($m);
+        return ;
+        if(date("d")%5!=0){
+            return ;
+        }
+
         $import = new ImportvideoController();
         $tag = [
             "Khoa học",
@@ -69,28 +75,19 @@ class Import_video extends Command
             "review sản phẩm",
             "engvid",
         ];
-        if(true){
-            //
-            // $loop_in_days: Số ngày quay lại từ đầu của vòng lập
-            //
-            $loop_in_days =5 ;
-            $page = date("z") % $loop_in_days;
-            $page = 5;
-            $per_page = (round(count($tag) / $loop_in_days));
-            $start = $page*$per_page;
-            $data_impor=[];
-            for($i=$start ;$i<($start + $per_page) ;$i++) {
-                if(!empty($tag[$i])){
-                    $data_import[] = $tag[$i];
-                }
-            }
-        }else{
-            $data_import=[];
-            //$data_import[0] = "review sản phẩm";
-        }
-        $keywords = implode(",", $data_import);
         $import->video_per_result = 100;
+
+        $s = microtime();
+        $data_import = $tag;
+        $keywords = implode(",", $data_import);
         $import->auto_get_video($keywords);
-        $import->send_mail_to_me_with_content("<h2>Hoàn thành xong auto_get_video</h2> ".PHP_EOL." Keywords: ".$keywords."".PHP_EOL." Tổng cộng: ".$import->var_log_count_import." video");
+        $e = microtime();
+        $time_process = $e-$s;
+        $import->send_mail_to_me_with_content("
+            <h2>Hoàn thành xong auto_get_video</h2> ".PHP_EOL."
+            <p>Keywords: ".$keywords."</p>".PHP_EOL."
+            <p>Tổng cộng: ".$import->var_log_count_import." video</p>
+            <p>Time_process: [".$time_process."]</p>
+        ");
     }
 }

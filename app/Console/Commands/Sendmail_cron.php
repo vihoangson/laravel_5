@@ -13,7 +13,7 @@ class Sendmail_cron extends Command
      *
      * @var string
      */
-    protected $signature = 'sendmail_cron';
+    protected $signature = 'send_db';
 
     /**
      * The console command description.

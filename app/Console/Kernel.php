@@ -27,8 +27,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('sendmail_cron')
-                 ->cron("0 */12 * * * *")
+        $schedule->command('send_db')
+                 ->dailyAt('23:30')
                  ;
         $schedule->command('check_video')
                  ->dailyAt('23:00')
