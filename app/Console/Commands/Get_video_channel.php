@@ -30,6 +30,6 @@ class Get_video_channel extends Command
     
     public function handle(){
         $import = new ImportvideoController();
-        $import->get_content_file_video();
+        $import->get_video_channel();
     }
 }

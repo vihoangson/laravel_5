@@ -427,32 +427,33 @@ class ImportvideoController extends Controller
 	// # php artisan get_video_channel
 	public function get_video_channel(){
 		$list_channel = [
-			// [
-			// 	'forUsername' => "vtvbooiminhdidauthe",
-			// ],
-			// [
-			// 	'id' => "UCCkitjrMbVi6wKc3vOeC9lw"// Bữa trưa vui vẻ
-			// ],
-			// [
-			// 	'forUsername' => "ONGIOICAUDAYROIVTV3"// Bữa trưa vui vẻ
-			// ],
-			// [
-			// 	'forUsername' => "vtvcapdoihoanhao"// Bữa trưa vui vẻ
-			// ],
-			// [
-			// 	'id' => "UCwmurIyZ6FHyVPtKppe_2_A"// Thách thức danh hài
-			// ],
-			// [
-			// 	'forUsername' => "handangplus"// Bữa trưa vui vẻ
-			// ],
-			// [
-			// 	'id' => "UCo7vprERng61p_oM9UjayrQ"// Film bộ nước ngoài
-			// ],
+			[
+				'forUsername' => "vtvbooiminhdidauthe",
+			],
+			[
+				'id' => "UCCkitjrMbVi6wKc3vOeC9lw"// Bữa trưa vui vẻ
+			],
+			[
+				'forUsername' => "ONGIOICAUDAYROIVTV3"// Bữa trưa vui vẻ
+			],
+			[
+				'forUsername' => "vtvcapdoihoanhao"// Bữa trưa vui vẻ
+			],
+			[
+				'id' => "UCwmurIyZ6FHyVPtKppe_2_A"// Thách thức danh hài
+			],
+			[
+				'forUsername' => "handangplus"// Bữa trưa vui vẻ
+			],
+			[
+				'id' => "UCo7vprERng61p_oM9UjayrQ"// Film bộ nước ngoài
+			],
 		];
 		if(!empty($list_channel)){
 			foreach ($list_channel as $key => $value) {
 				($this->get_data_video_channel($value));
 			}
+			$this->get_content_file_video();
 		}
 		//pageToken
 
@@ -467,13 +468,11 @@ class ImportvideoController extends Controller
 
 	private function get_data_video_channel($id_channel){
 		$list_id = ($this->get_id_channel($id_channel));
-
-		
 		$i=0;
 		$pageToken=null;
 		while(true){
 			$i++;
-			if($i==9)
+			if($i==2)
 				break;
 
 				echo '$i: '.$i.PHP_EOL;
@@ -499,6 +498,7 @@ class ImportvideoController extends Controller
 				curl_close($curl);
 				$responseObj = @json_decode($json_response);
 				$total[] = $responseObj;
+				break;
 				if(!empty($responseObj->nextPageToken)){
 					$pageToken = $responseObj->nextPageToken;
 				}else{
@@ -509,7 +509,7 @@ class ImportvideoController extends Controller
 					break;
 				}
 		}//while
-		file_put_contents(time().".json", json_encode($total));
+		file_put_contents(storage_path().'/data_video/'.$list_id.".json", json_encode($total));
 		return;
 	}
 
