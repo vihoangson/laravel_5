@@ -29,13 +29,6 @@ class Import_video extends Command
      */
     
     public function handle(){
-        $m = config("video.vus.vn.config.video_tag");
-        print_r($m);
-        return ;
-        if(date("d")%5!=0){
-            return ;
-        }
-
         $import = new ImportvideoController();
         $tag = [
             "Khoa học",

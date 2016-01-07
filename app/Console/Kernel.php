@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\Sendmail_cron::class,
         \App\Console\Commands\Check_video::class,
         \App\Console\Commands\Import_video::class,
+        \App\Console\Commands\Get_video_channel::class,
     ];
 
     /**

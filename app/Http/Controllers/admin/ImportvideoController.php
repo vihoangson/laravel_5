@@ -159,6 +159,7 @@ class ImportvideoController extends Controller
 	///////
 	// Tự động lấy tin theo từ khóa
 	///////
+
 	public function auto_get_video($keywords=null){
 		$keywords_tmp=[
 			// "Khoa học",
@@ -224,6 +225,7 @@ class ImportvideoController extends Controller
 			Log::info("Xóa duplicate video: ".$value->id);
 		}
 	}
+
 
 	///////
 	// Lấy thông tin chi tiết của video thông qua ID video
@@ -408,6 +410,161 @@ class ImportvideoController extends Controller
 		$video["PageToken"] = $PageToken;
 		return $video;
 	}
+
+/////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
+///
+/// START FUNCTION
+///
+/////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
+
+	// Function này dùng để chạy command
+	// # php artisan get_video_channel
+	public function get_video_channel(){
+		$list_channel = [
+			// [
+			// 	'forUsername' => "vtvbooiminhdidauthe",
+			// ],
+			// [
+			// 	'id' => "UCCkitjrMbVi6wKc3vOeC9lw"// Bữa trưa vui vẻ
+			// ],
+			// [
+			// 	'forUsername' => "ONGIOICAUDAYROIVTV3"// Bữa trưa vui vẻ
+			// ],
+			// [
+			// 	'forUsername' => "vtvcapdoihoanhao"// Bữa trưa vui vẻ
+			// ],
+			// [
+			// 	'id' => "UCwmurIyZ6FHyVPtKppe_2_A"// Thách thức danh hài
+			// ],
+			// [
+			// 	'forUsername' => "handangplus"// Bữa trưa vui vẻ
+			// ],
+			// [
+			// 	'id' => "UCo7vprERng61p_oM9UjayrQ"// Film bộ nước ngoài
+			// ],
+		];
+		if(!empty($list_channel)){
+			foreach ($list_channel as $key => $value) {
+				($this->get_data_video_channel($value));
+			}
+		}
+		//pageToken
+
+		// Làm tạm
+		//
+	}
+
+	public function show_get_video_channel(){
+		$this->get_content_file_video();
+		die;
+	}
+
+	private function get_data_video_channel($id_channel){
+		$list_id = ($this->get_id_channel($id_channel));
+
+		
+		$i=0;
+		$pageToken=null;
+		while(true){
+			$i++;
+			if($i==9)
+				break;
+
+				echo '$i: '.$i.PHP_EOL;
+				echo '$pageToken: '.$pageToken.PHP_EOL.PHP_EOL;
+
+				$part = 'contentDetails,id,snippet,status';//contentDetails,id,snippet,status
+				$option = array(
+					'part' => $part,
+					'playlistId' => $list_id,//UUwKJsHzpBfPsde70S2UPa4A
+					'maxResults' => 50,
+					'key' => API_GOOGLE
+					);
+				if(!empty($pageToken)){
+					$option["pageToken"] = $pageToken;
+				}
+				$url = "https://www.googleapis.com/youtube/v3/playlistItems?".http_build_query($option, 'a', '&');
+				
+				$curl = curl_init($url);
+				curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+				curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
+				curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+				$json_response = curl_exec($curl);
+				curl_close($curl);
+				$responseObj = @json_decode($json_response);
+				$total[] = $responseObj;
+				if(!empty($responseObj->nextPageToken)){
+					$pageToken = $responseObj->nextPageToken;
+				}else{
+					$pageToken = '';
+					break;
+				}
+				if($pageToken==''){
+					break;
+				}
+		}//while
+		file_put_contents(time().".json", json_encode($total));
+		return;
+	}
+
+	private function get_id_channel($id_channel){
+		$part = 'contentDetails';
+		$option = $id_channel;
+		$option['part'] = $part;
+		$option['key'] = API_GOOGLE;
+		$url = "https://www.googleapis.com/youtube/v3/channels?".http_build_query($option, 'a', '&');
+		$curl = curl_init($url);
+		curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		$json_response = curl_exec($curl);
+		curl_close($curl);
+		$responseObj = json_decode($json_response);
+		return $responseObj->items[0]->contentDetails->relatedPlaylists->uploads;
+	}
+/////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
+///
+/// END FUNCTION
+///
+/////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
+
+
+
+public function get_content_file_video(){
+	$path = storage_path().'/data_video/';
+	$dir = scandir($path);
+	foreach ($dir as $key => $value) {
+		if(preg_match("/\.json$/",$value)){
+			$data = (json_decode(file_get_contents($path.$value)));
+			foreach ($data as $key2 => $value2) {
+				foreach ($value2->items as $key3 => $value3) {
+					$params[$key3]["videoId"] = $value3->snippet->resourceId->videoId;
+					$params[$key3]["title"] = $value3->snippet->title;
+					$params[$key3]["description"] = $value3->snippet->description;
+					$params["keywords"] = $value;
+				}
+				$this->save_video_by_array($params);
+			}
+		}
+	}
+}
+
+
+
+
+
 
 
 }

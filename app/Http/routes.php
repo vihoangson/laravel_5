@@ -47,6 +47,9 @@ Route::get('/admin/',  function(){
 	return view("admin.index");
 });
 
+
+
+Route::get('/admin/show_get_video_channel', "admin\ImportvideoController@show_get_video_channel");
 Route::get('/admin/import_video/ajax_action/{case}', "admin\ImportvideoController@ajax_action_import_video");
 Route::get('/admin/import_video/ajax_action/{case}/{keywords}', "admin\ImportvideoController@ajax_action_import_video");
 
