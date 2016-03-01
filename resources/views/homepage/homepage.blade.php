@@ -1,7 +1,13 @@
 @extends("layouts/layout_video")
 @section("title","Trang chủ Video")
 
-
+<script>
+    $(".screencast").each(function(){
+        if($(this).height()==90){
+            $(this).parents("article");
+        }
+    });
+</script>
 
 @section("slide_upload")
     <section class="row upload_media">

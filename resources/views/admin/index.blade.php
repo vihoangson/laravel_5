@@ -4,7 +4,7 @@
 	<div class="container">
 		<div class="list-group">
 			<h4>Admin panel</h4>
-			<a href="/admin/import_video/" class="list-group-item active">import_video</a>
+			<h2>Hi bạn</h2>
 		</div>
 	</div>
 @stop

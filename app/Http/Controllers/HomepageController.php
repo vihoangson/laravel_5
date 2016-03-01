@@ -20,7 +20,7 @@ class HomepageController extends Controller
 	}
 
 	public function show(){
-		$rs = Videos::limit(32)->orderBy("videos_viewcount","desc")->get();
+		$rs = Videos::limit(32)->where("videos_viewcount",">",10000)->orderBy("id","desc")->get();
 		return view("homepage.homepage",compact("rs"));
 	}
 
