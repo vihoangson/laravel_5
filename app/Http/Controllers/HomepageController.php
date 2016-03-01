@@ -15,7 +15,7 @@ class HomepageController extends Controller
 		define("API_GOOGLE","AIzaSyClzC3syB5Ig4vpjgsvkHF2mEU9kTpi4C4");
 		$this->video_per_result = 50;
 		if(\Session::get("user")!="ok"){
-			$this->middleware('auth');
+			//$this->middleware('auth');
 		}
 	}
 
