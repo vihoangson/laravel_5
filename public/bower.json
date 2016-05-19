@@ -1,0 +1,17 @@
+{
+  "name": "public",
+  "homepage": "https://github.com/vihoangson/laravel_5",
+  "authors": [
+    "Son Vi Hoang <hoang_son@lampart-vn.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

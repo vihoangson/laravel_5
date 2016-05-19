@@ -1,8 +1,7 @@
 cache
-bower_components
 /vendor
 /public/uploads/
 composer.phar
-storage/phapthi.sqlite
+storage/video.vihoangson.com.sqlite
 public/media
 *.sqlite

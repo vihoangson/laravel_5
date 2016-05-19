@@ -48,7 +48,7 @@ return [
 
         'sqlite' => [
             'driver'   => 'sqlite',
-            'database' => storage_path('phapthi.sqlite'),
+            'database' => storage_path('video.vihoangson.com.sqlite'),
             'prefix'   => '',
         ],
 
