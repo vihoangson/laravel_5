@@ -68,19 +68,16 @@ class Import_video extends Command
             "review sản phẩm",
             "engvid",
         ];
-        $import->video_per_result = 100;
-
-        $s = microtime();
+        $tag=["engvid"];
+        // Mỗi từ khóa sẽ lấy 100 video
+        $import->video_per_result = 40;
         $data_import = $tag;
         $keywords = implode(",", $data_import);
         $import->auto_get_video($keywords);
-        $e = microtime();
-        $time_process = $e-$s;
         $import->send_mail_to_me_with_content("
             <h2>Hoàn thành xong auto_get_video</h2> ".PHP_EOL."
             <p>Keywords: ".$keywords."</p>".PHP_EOL."
             <p>Tổng cộng: ".$import->var_log_count_import." video</p>
-            <p>Time_process: [".$time_process."]</p>
         ");
     }
 }

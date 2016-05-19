@@ -159,46 +159,8 @@ class ImportvideoController extends Controller
 	///////
 	// Tự động lấy tin theo từ khóa
 	///////
-
 	public function auto_get_video($keywords=null){
 		$keywords_tmp=[
-			// "Khoa học",
-			// "Công nghệ",
-			// "Khoa học và công nghệ",
-			// "Tin thế giới",
-			// "Thế giới tự nhiên",
-			// "Thế giới động vật",
-
-
-			// "trường giang",
-			// "hài trường giang",
-			// "Hoài Linh",
-			// "Hài Hoài Linh",
-			// "Nhã Phương",
-			// "Ơn trời cậu đây rồi",
-			// "Ơn giời cậu đây rồi",
-			// "thách thức danh hài",
-			// "Cười xuyên việt",
-			// "Gặp nhau cuối tuần",
-			// "Hỏi xoáy đáp xoay",
-
-
-			// "phim hoạt hình",
-			// "hoạt hình",
-			// "hãy đợi đấy",
-			// "dragon ball",
-			// "Doraemon",
-			// "Đô rê mon",
-			// "mickey",
-
-			//"guitar solo",
-			//"nhạc xuân",
-			// "nhạc đám cưới",
-			// "nhạc cưới",
-			//"dưa leo",
-
-			//"DIY do it yourself",
-			//"how does it made",
 		];
 		if(empty($keywords)){
 			$this->info_log[] = "Không có keywords";
@@ -264,8 +226,13 @@ class ImportvideoController extends Controller
 					"keywords"    =>$value_keys,
 					"num_request" => $num_request,
 				];
+				//============ ============  ============  ============ 
+				// Tìm kiếm
 				$video = $this->get_video_custom($params);
 				$video["keywords"] = $params["keywords"];
+
+				//============ ============  ============  ============ 
+				//  Lưu vào db
 				$this->save_video_by_array($video);
 			}
 			return true;
@@ -319,11 +286,16 @@ class ImportvideoController extends Controller
 	private function get_video_custom($params){
 		$keywords    = $params["keywords"];
 		$num_request = $params["num_request"];
+		//============  ============ 
+		// Mỗi lần search sẽ có 50 kết quả
+		// Số này là cố định của youtube
+		//============  ============ 
 		$perpage = 50;
 		$options = [];
 		$j=0;
 		$i=0;
 		$video=[];
+		// Mở nhiều page cho tới khi đủ kết quả mong muốn
 		while($j < $num_request){
 			if(isset($rs[$i-1]["PageToken"]["nextPageToken"])){
 				$options["PageToken"] = $rs[$i-1]["PageToken"]["nextPageToken"];
