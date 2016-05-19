@@ -37,6 +37,6 @@ return [
       "Nguyễn Hoàng Khắc Hiếu",
       "review sản phẩm",
       "engvid",
-      ]
+      ] 
 ];
 
