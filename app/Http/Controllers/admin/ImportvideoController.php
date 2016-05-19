@@ -141,15 +141,19 @@ class ImportvideoController extends Controller
 		$log = "Start: ".__FUNCTION__." ";
 		$log .= "Các video bị chết: ";
 		$rs = Videos::all();
+		$all_row = count($value)''
 		foreach($rs as $key => $value){
 			if(vaild_youtube("http://img.youtube.com/vi/".$value->videos_url."/0.jpg")!="video valid"){
-				echo $value->videos_url."
+				echo "
+
+				[".$key."/".$all_row."]".$value->videos_url.PHP_EOL."
+
 				";
 				$value->delete();
 				Log::info("Delete: ".$value->videos_url."");
 			}else{
 				echo "Done: ".$value->videos_url."
-";
+			";
 			}
 		}
 		$log .= "Stop: ".__FUNCTION__." ";
