@@ -141,7 +141,7 @@ class ImportvideoController extends Controller
 		$log = "Start: ".__FUNCTION__." ";
 		$log .= "Các video bị chết: ";
 		$rs = Videos::all();
-		$all_row = count($value);
+		$all_row = count($rs);
 		foreach($rs as $key => $value){
 			if(vaild_youtube("http://img.youtube.com/vi/".$value->videos_url."/0.jpg")!="video valid"){
 				echo "
