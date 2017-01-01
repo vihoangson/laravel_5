@@ -1,14 +1,18 @@
 <?php
 namespace App\Http\Controllers\admin;
+
 use Mail;
 use Log;
 use App\Models\Videos;
+use App\Models\Videos_cat;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\CheckArticlesRequest;
 use App\Http\Controllers\Controller;
 use google\apiclient\src\Google\Service\YouTube;
 use Illuminate\Console\Command;
+use Mockery\Exception;
+
 class ImportvideoController extends Controller
 {
 	private $info_log=[];
@@ -86,7 +90,6 @@ class ImportvideoController extends Controller
 				$this->find_duplicate_row_and_delete();
 			break;
 			case "find_and_delete_video_disable":
-				return false;
 				$this->find_and_delete_video_disable();
 			break;
 			case "update_summary_to_viewcount":
@@ -176,7 +179,10 @@ class ImportvideoController extends Controller
 	///////
 	// Tìm và xóa cái video bị trùng
 	///////
-	public function find_duplicate_row_and_delete(){
+    /**
+     *
+     */
+    public function find_duplicate_row_and_delete(){
 		$rs = \DB::table("videos")
 			->select(\DB::raw('id, videos_url'))
 			->groupBy('videos_url')
@@ -204,14 +210,20 @@ class ImportvideoController extends Controller
 			'key' => API_GOOGLE
 			);
 		$url = "https://www.googleapis.com/youtube/v3/videos?".http_build_query($option, 'a', '&');
-		$curl = curl_init($url);
+
+        $curl = curl_init($url);
 		curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
 		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		$json_response = curl_exec($curl);
 		curl_close($curl);
-		$responseObj = json_decode($json_response);
-		return $responseObj->items;
+        if (!empty($json_response)) {
+            $responseObj = json_decode($json_response);
+        }
+        if (!empty($responseObj)) {
+            return $responseObj->items;
+        }
+        return false;
 	}
 
 	///////
@@ -224,12 +236,12 @@ class ImportvideoController extends Controller
 				$this->info_log[] = "Keyword: [".$value_keys."] - [".$num_request."] kết quả";
 				$params = [
 					"keywords"    =>$value_keys,
-					"num_request" => $num_request,
+					"num_request" => $num_request
 				];
 				//============ ============  ============  ============ 
 				// Tìm kiếm
 				$video = $this->get_video_custom($params);
-				$video["keywords"] = $params["keywords"];
+                $video["keywords"] = $params["keywords"];
 
 				//============ ============  ============  ============ 
 				//  Lưu vào db
@@ -246,8 +258,14 @@ class ImportvideoController extends Controller
 	//
 	// $params["keywords"]
 	///////
-	private function save_video_by_array($params){
+    /**
+     * @param $params
+     */
+    private function save_video_by_array($params){
 		$i = 0;
+        /** @var int $videos_id Lấy Id phù hợp*/
+        $videos_cat_id = $this->get_videos_cat_id($params["keywords"]);
+
 		foreach ($params as $key => $value) {
 			if(empty($value["videoId"])) continue;
 			if(Videos::where("videos_url",$value["videoId"])->count()>0){
@@ -256,17 +274,21 @@ class ImportvideoController extends Controller
 			} else{
 				$this->info_log[] = "<span class='label label-success'> Không có trong DB</span> [".$value["title"]."]";
 			}
-			$videos_summary = $this->get_detail_video($value["videoId"]);
+
+
+            $videos_summary = $this->get_detail_video($value["videoId"]);
 			$data_video = [
 				"videos_url"       => $value["videoId"],
 				"videos_title"     => $value["title"],
-				"videos_cat"       => $params["keywords"],
+				"videos_cat"       => $videos_cat_id,
 				"videos_note"      => $value["description"],
-				"videos_summary"   => json_encode($videos_summary),
-				"videos_viewcount" => $videos_summary[0]->statistics->viewCount,
-				"videos_duration"  => $videos_summary[0]->contentDetails->duration,
 			];
-			if(Videos::create($data_video)){
+            if($videos_summary){
+                $data_video["videos_summary"]   = json_encode($videos_summary);
+                $data_video["videos_viewcount"] = $videos_summary[0]->statistics->viewCount;
+                $data_video["videos_duration"]  = $videos_summary[0]->contentDetails->duration;
+            }
+			if($id_new = Videos::create($data_video)){
 				$this->var_log_count_import++;
 				echo "Imported: ".$value["videoId"].PHP_EOL;
 				$i++;
@@ -277,13 +299,14 @@ class ImportvideoController extends Controller
 		$this->info_log[] = "Đã save: [".$i."] kết quả";
 	}
 
-
-	///////
-	// Lấy thông tin tùy chỉnh không giới hạn page
-	//	$params["keywords"]
-	//	$params["num_request"]
-	///////
-	private function get_video_custom($params){
+    /**
+     * Search trên api để lấy dữ liệu video về
+     *
+     * @param $params["keywords"]
+     * @param $params["num_request"]
+     * @return array
+     */
+    private function get_video_custom($params){
 		$keywords    = $params["keywords"];
 		$num_request = $params["num_request"];
 		//============  ============ 
@@ -530,6 +553,23 @@ class ImportvideoController extends Controller
 		}
 	}
 
-
+    /**
+     *  Chức năng tìm id của video_cat.name
+     * Nếu không có sẽ tạo mới và đưa ra ID
+     *
+     * @param $name_videos_cat
+     * @return int
+     * @throws Exception
+     */
+    public function get_videos_cat_id($name_videos_cat)
+    {
+        //@TODO: Check exist
+        $count_data = Videos_cat::where("name", "=", $name_videos_cat)->count();
+        if($count_data==0){
+            Videos_cat::create(["name"=>$name_videos_cat]);
+        }
+        //@TODO:
+        $rs = Videos_cat::where("name", "=", $name_videos_cat)->first();
+        return $rs->id;
+    }
 }
-
