@@ -151,7 +151,7 @@ class ImportvideoController extends Controller
 
         // Nếu không có dữ liệu thì reset lại trạng thái bang đầu
         if($all_row==0){
-            Videos::update(["flag_check"=>0]);
+            Videos::where("flag_check",1)->update(["flag_check"=>0]);
         }
 
         // Duyệt toàn bộ mảng
