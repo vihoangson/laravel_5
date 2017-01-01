@@ -140,24 +140,46 @@ class ImportvideoController extends Controller
 	///////
 	// Tự động tìm và xóa các file đã disable
 	///////
-	public function find_and_delete_video_disable(){
+    /**
+     *
+     */
+    public function find_and_delete_video_disable(){
 		$log = "Start: ".__FUNCTION__." ";
 		$log .= "Các video bị chết: ";
 		$rs = Videos::where("flag_check","=",0)->get();
-		$all_row = count($rs);
+        $all_row = count($rs);
+
+        // Nếu không có dữ liệu thì reset lại trạng thái bang đầu
+        if($all_row==0){
+            Videos::update(["flag_check"=>0]);
+        }
+
+        // Duyệt toàn bộ mảng
 		foreach($rs as $key => $value){
-		    if ($key>1000) break;
-			echo "[".$key."/".$all_row."]".PHP_EOL;
+		    // Bước chạy
+		    if ($key > env('STEP_CHECK_VIDEO', 1000)) {
+                break;
+            }
+
+            // Xuất ra màn hình
+            echo "[".$key."/".$all_row."]".PHP_EOL;
+
+            // Check Video còn sống hay không
 			if(vaild_youtube("http://img.youtube.com/vi/".$value->videos_url."/0.jpg")!="video valid"){
 				echo "".$value->videos_url.PHP_EOL."";
 				$value->delete();
 				Log::info("Delete: ".$value->videos_url."");
 			}else{
+			    // Gán cờ giá trị 1 và lưu vào
                 $value->flag_check = 1;
                 $value->save();
+
+                // Xuất ra màn hình
 				echo "Done: ".$value->videos_url.PHP_EOL."";
 			}
 		}
+
+		// Lưu vào log
 		$log .= "Stop: ".__FUNCTION__."";
 		Log::info($log);
 	}
