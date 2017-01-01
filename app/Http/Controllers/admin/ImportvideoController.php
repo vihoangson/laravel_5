@@ -146,7 +146,7 @@ class ImportvideoController extends Controller
 		$rs = Videos::where("flag_check","=",0)->get();
 		$all_row = count($rs);
 		foreach($rs as $key => $value){
-		    if ($key>100) break;
+		    if ($key>1000) break;
 			echo "[".$key."/".$all_row."]".PHP_EOL;
 			if(vaild_youtube("http://img.youtube.com/vi/".$value->videos_url."/0.jpg")!="video valid"){
 				echo "".$value->videos_url.PHP_EOL."";
