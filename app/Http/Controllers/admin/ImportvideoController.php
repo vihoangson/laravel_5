@@ -143,15 +143,18 @@ class ImportvideoController extends Controller
 	public function find_and_delete_video_disable(){
 		$log = "Start: ".__FUNCTION__." ";
 		$log .= "Các video bị chết: ";
-		$rs = Videos::all();
+		$rs = Videos::where("flag_check","=",0)->get();
 		$all_row = count($rs);
 		foreach($rs as $key => $value){
+		    if ($key>100) break;
 			echo "[".$key."/".$all_row."]".PHP_EOL;
 			if(vaild_youtube("http://img.youtube.com/vi/".$value->videos_url."/0.jpg")!="video valid"){
 				echo "".$value->videos_url.PHP_EOL."";
 				$value->delete();
 				Log::info("Delete: ".$value->videos_url."");
 			}else{
+                $value->flag_check = 1;
+                $value->save();
 				echo "Done: ".$value->videos_url.PHP_EOL."";
 			}
 		}

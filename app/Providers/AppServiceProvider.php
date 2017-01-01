@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Models\Videos;
+use App\Models\Videos_cat;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -13,12 +15,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-        $rs = Videos::groupBy("videos_cat")->get();
-        // foreach ($rs as $key => $value) {
-        //     echo $value->videos_title;
-        // }
 
+        $rs = Videos_cat::where("active","=",1)->get();
         view()->share("list_cat",$rs);
     }
 
